@@ -1,0 +1,43 @@
+{% extends 'basefront.html.twig' %}
+
+{% block title %}Ressource Index{% endblock %}
+
+{% block body %}
+    <h1 class="text-center my-4">Ressources</h1>
+
+    <div class="container">
+        <div class="row">
+            {% for ressource in ressources %}
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ ressource.nomRessource }}</h5>
+                            <h6 class="card-subtitle text-muted">{{ ressource.typeRessource }}</h6>
+                            <p class="card-text mt-2">
+
+                                <strong>Quantité:</strong> {{ ressource.quantiteRessource }} {{ ressource.uniteMesure }}<br>
+                                <strong>Ajouté le:</strong> {{ ressource.dateAjoutRessource ? ressource.dateAjoutRessource|date('Y-m-d') : 'N/A' }}<br>
+                                <strong>Expiration:</strong> {{ ressource.dateExpirationRessource ? ressource.dateExpirationRessource|date('Y-m-d') : 'N/A' }}<br>
+                                <strong>Statut:</strong> {{ ressource.statutRessource }} <br>
+                                <a style="color: black;" href="/depot/{{ ressource.depot.id }}">      <strong class="bg-primary p-1 text-end" style="border-radius: 15px;color:black" >Stocké dans le depot {{ ressource.depot.nomDepot }} </strong>  
+</a>
+                            </p>
+                            <div class="d-flex justify-content-between">
+                                <a href="{{ path('app_ressource_show', {'id': ressource.id}) }}" class="btn btn-primary">Voir</a>
+                                <a href="{{ path('app_ressource_edit', {'id': ressource.id}) }}" class="btn btn-warning">Modifier</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-12 text-center">
+                    <p>Aucune ressource trouvée.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <div class="text-center mt-4">
+        <a href="{{ path('app_ressource_new') }}" class="btn btn-success">Créer une nouvelle ressource</a>
+    </div>
+{% endblock %}

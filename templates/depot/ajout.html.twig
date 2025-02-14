@@ -1,0 +1,250 @@
+{% extends 'basefront.html.twig' %}
+
+{% block title %}Ajouter un Dépôt{% endblock %}
+
+
+{% block stylesheets %}
+    {{ parent() }}  <!-- Inclut tous les autres fichiers CSS hérités -->
+    <link href="{{ asset('Front/assets/css/style.css') }}" rel="stylesheet">  <!-- Assurez-vous que le fichier CSS est bien chargé -->
+{% endblock %}
+
+{% block body %}
+
+   <!-- Spinner Start -->
+       <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
+            <div class="spinner-grow text-primary" role="status"></div>
+        </div>
+        <!-- Spinner End -->
+
+
+        <!-- Navbar start -->
+        <div class="container-fluid fixed-top">
+            <div class="container topbar bg-primary d-none d-lg-block">
+                <div class="d-flex justify-content-between">
+                    <div class="top-info ps-2">
+                        <small class="me-3"><i class="fas fa-map-marker-alt me-2 text-secondary"></i> <a href="#" class="text-white">Technopole El ghazela, Tunis</a></small>
+                        <small class="me-3"><i class="fas fa-envelope me-2 text-secondary"></i><a href="#" class="text-white">ArdhiSmart@gmail.com</a></small>
+                    </div>
+                    <div class="top-link pe-2">
+                        <a href="#" class="text-white"><small class="text-white mx-2"></small>/</a>
+                        <a href="#" class="text-white"><small class="text-white mx-2"></small>/</a>
+                        <a href="#" class="text-white"><small class="text-white ms-2"></small></a>
+                    </div>
+                </div>
+            </div>
+            <div class="container px-0">
+                <nav class="navbar navbar-light bg-white navbar-expand-xl">
+                    <a href="index.html" class="navbar-brand"><h1 class="text-primary display-6">ArdhiSmart</h1></a>
+                    <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                        <span class="fa fa-bars text-primary"></span>
+                    </button>
+                    <div class="collapse navbar-collapse bg-white" id="navbarCollapse">
+                        <div class="navbar-nav mx-auto">
+
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Zone</a>
+                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                    <a href="cart.html" class="dropdown-item active">Ajouter des zones</a>
+                                    <a href="chackout.html" class="dropdown-item ">Modifier les zones</a>
+                                    <a href="testimonial.html" class="dropdown-item">Liste les zones</a>
+                                    <a href="testimonial.html" class="dropdown-item">Supprimer les zones</a>
+                                </div>
+                            </div> 
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Plante</a>
+                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                    <a href="cart.html" class="dropdown-item ">Ajouter des plantes</a>
+                                    <a href="chackout.html" class="dropdown-item ">Modifier les plantes</a>
+                                    <a href="testimonial.html" class="dropdown-item">Liste les plantes</a>
+                                    <a href="testimonial.html" class="dropdown-item">Supprimer les plantes</a>
+                                </div>
+                            </div> 
+
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Categorie</a>
+                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                    <a href="cart.html" class="dropdown-item ">Ajouter des Categories</a>
+                                    <a href="chackout.html" class="dropdown-item ">Modifier les Categories</a>
+                                    <a href="testimonial.html" class="dropdown-item">Liste les Categories</a>
+                                    <a href="testimonial.html" class="dropdown-item">Supprimer les Categories</a>
+                                </div>
+                            </div> 
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Produit</a>
+                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                    <a href="cart.html" class="dropdown-item ">Ajouter des Produit</a>
+                                    <a href="chackout.html" class="dropdown-item ">Modifier les produits</a>
+                                    <a href="testimonial.html" class="dropdown-item">Liste les produits</a>
+                                    <a href="testimonial.html" class="dropdown-item">Supprimer les produits</a>
+                                </div>
+                            </div>                            
+                        
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Depots</a>
+                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                    <a href="cart.html" class="dropdown-item ">Ajouter des depots</a>
+                                    <a href="chackout.html" class="dropdown-item ">Modifier les depots</a>
+                                    <a href="testimonial.html" class="dropdown-item">Liste les depots</a>
+                                    <a href="testimonial.html" class="dropdown-item">Supprimer les depots</a>
+                                </div>
+                            </div> 
+                            
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Ressource</a>
+                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                    <a href="cart.html" class="dropdown-item ">Ajouter des Ressources</a>
+                                    <a href="chackout.html" class="dropdown-item ">Modifier les Ressources</a>
+                                    <a href="testimonial.html" class="dropdown-item">Liste les Ressources</a>
+                                    <a href="testimonial.html" class="dropdown-item">Supprimer les Ressources</a>
+                                </div>
+                            </div> 
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Machine</a>
+                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                    <a href="cart.html" class="dropdown-item ">Ajouter des machines</a>
+                                    <a href="chackout.html" class="dropdown-item ">Modifier les machines</a>
+                                    <a href="testimonial.html" class="dropdown-item">Liste les machines</a>
+                                    <a href="testimonial.html" class="dropdown-item">Supprimer les machines</a>
+                                </div>
+                            </div> 
+                            
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Maintenance</a>
+                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                    <a href="cart.html" class="dropdown-item ">Ajouter des maintenances</a>
+                                    <a href="chackout.html" class="dropdown-item ">Modifier les maintenances</a>
+                                    <a href="testimonial.html" class="dropdown-item">Liste les maintenances</a>
+                                    <a href="testimonial.html" class="dropdown-item">Supprimer les maintenances</a>
+                                </div>
+                            </div> 
+                    
+                        </div>
+                        <div class="d-flex m-3 me-0">
+                            <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
+                            <a href="#" class="position-relative me-4 my-auto">
+                                <i class="fa fa-shopping-bag fa-2x"></i>
+                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
+                            </a>
+                            <a href="#" class="my-auto">
+                                <i class="fas fa-user fa-2x"></i>
+                            </a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!-- Navbar End -->
+
+
+        <!-- Modal Search Start -->
+        <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-fullscreen">
+                <div class="modal-content rounded-0">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Search by keyword</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body d-flex align-items-center">
+                        <div class="input-group w-75 mx-auto d-flex">
+                            <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
+                            <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal Search End -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Single Page Header Start -->
+    <div class="page-header-depot py-5">
+        <h1 class="text-center text-white display-6">Gestion des Depots</h1>
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Pages</a></li>
+               
+            </ol>
+    </div>
+    <!-- Single Page Header End -->
+
+  <!-- Stock Form Start -->
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <div class="text-center w-100">
+            <h1 class="mb-4" style="font-size: 2rem;">Ajouter un Dépôt</h1>
+        </div>
+        {{ form_start(form, {'attr': { 'novalidate': 'novalidate'}}) }}
+        
+        <div class="row g-5">
+            <div class="col-md-12 col-lg-12 col-xl-13">
+                <!-- Nom du Dépôt -->
+                <div class="form-item">
+                    <label class="form-label my-3" for="nom_depot" style="font-size: 1.75rem; text-align: center;">Nom du Dépôt<sup>*</sup></label>
+                    {{ form_widget(form.nom_depot, {'attr': {'class': 'form-control'}}) }}
+                    <div class="text-danger">{{ form_errors(form.nom_depot) }}</div>
+                </div>
+
+                <!-- Localisation -->
+                <div class="form-item">
+                    <label class="form-label my-3" for="localisation_depot" style="font-size: 1.75rem; text-align: center;">Localisation<sup>*</sup></label>
+                    {{ form_widget(form.localisation_depot, {'attr': {'class': 'form-control'}}) }}
+                    <div class="text-danger">{{ form_errors(form.localisation_depot) }}</div>
+                </div>
+
+                <!-- Capacité -->
+                <div class="form-item">
+                    <label class="form-label my-3" for="capacite_depot" style="font-size: 1.75rem; text-align: center;">Capacité<sup>*</sup></label>
+                    {{ form_widget(form.capacite_depot, {'attr': {'class': 'form-control'}}) }}
+                    <div class="text-danger">{{ form_errors(form.capacite_depot) }}</div>
+                </div>
+
+                <!-- Unité de Capacité -->
+                <div class="form-item">
+                    <label class="form-label my-3" for="unite_cap_depot" style="font-size: 1.75rem; text-align: center;">Unité de Capacité<sup>*</sup></label>
+                    {{ form_widget(form.unite_cap_depot, {'attr': {'class': 'form-select'}}) }}
+                    <div class="text-danger">{{ form_errors(form.unite_cap_depot) }}</div>
+                </div>
+
+                <!-- Type de Stockage -->
+                <div class="form-item">
+                    <label class="form-label my-3" for="type_stockage_depot" style="font-size: 1.75rem; text-align: center;">Type de Stockage<sup>*</sup></label>
+                    {{ form_widget(form.type_stockage_depot, {'attr': {'class': 'form-control'}}) }}
+                    <div class="text-danger">{{ form_errors(form.type_stockage_depot) }}</div>
+                </div>
+
+                <!-- Statut -->
+                <div class="form-item">
+                    <label class="form-label my-3" for="statut_depot" style="font-size: 1.75rem; text-align: center;">Statut<sup>*</sup></label>
+                    {{ form_widget(form.statut_depot, {'attr': {'class': 'form-select'}}) }}
+                    <div class="text-danger">{{ form_errors(form.statut_depot) }}</div>
+                </div>
+
+                <!-- Boutons Enregistrer et Annuler -->
+                <div class="row g-4 pt-4 text-end">
+                    <div class="col">
+                        <button type="submit" class="btn border-secondary py-3 px-4 text-uppercase text-primary w-auto">Valider</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+</div>
+
+    <!-- Stock Form End -->
+{% endblock %}
+

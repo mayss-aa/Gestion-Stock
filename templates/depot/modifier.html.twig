@@ -1,0 +1,27 @@
+{% extends 'basefront.html.twig' %}
+
+{% block title %}Modifier un Dépôt{% endblock %}
+
+{% block body %}
+<h1 class="text-center my-4">Modifier un Dépôt</h1>
+
+<div class="container shadow-lg p-5">
+{{ form_start(form, {'attr': { 'novalidate': 'novalidate'}}) }}
+
+{% for field in form %}
+<div class="mb-3">
+    {{ form_label(field, null, {'label_attr': {'class': 'form-label required'}}) }}
+    {{ form_widget(field, {'attr': {'class': 'form-control'}}) }}
+    <div class="text-danger">{{ form_errors(field) }}</div>
+</div>
+{% endfor %}
+
+<div class="text-center">
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+    <a class="btn btn-danger" href="{{ path('app_depot_delete', {'id': depot.id}) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce dépôt ?')">Supprimer</a>
+</div>
+
+{{ form_end(form) }}
+</div>
+{% endblock %}
+

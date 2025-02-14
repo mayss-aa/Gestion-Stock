@@ -1,0 +1,86 @@
+{% extends 'basefront.html.twig' %}
+
+{% block title %}Edit Ressource{% endblock %}
+
+{% block body %}
+    <h1 class="text-center" >Modifier Ressource</h1>
+
+
+<style>/* Ajouter une étoile rouge aux labels des champs obligatoires */
+.required::after {
+    content: " *";
+    color: red;
+    font-weight: bold;
+}
+
+/* Messages d'erreur en rouge */
+.text-danger {
+    color: red;
+    font-size: 0.875rem;
+    margin-top: 5px;
+}
+</style>
+<div class="container m-5 p-4 shadow-lg">
+    {{ form_start(form, {'attr': { 'novalidate': 'novalidate'}}) }}
+
+    <div class="mb-3">
+        {{ form_label(form.nom_ressource, 'Nom de la ressource ', {'label_attr': {'class': 'form-label required'}}) }}
+        {{ form_widget(form.nom_ressource, {'attr': {'class': 'form-control', 'placeholder': 'Entrez le nom'}}) }}
+        <div class="text-danger">{{ form_errors(form.nom_ressource) }}</div>
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.type_ressource, 'Type de ressource ', {'label_attr': {'class': 'form-label required'}}) }}
+        {{ form_widget(form.type_ressource, {'attr': {'class': 'form-control', 'placeholder': 'Entrez le type'}}) }}
+        <div class="text-danger">{{ form_errors(form.type_ressource) }}</div>
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.quantite_ressource, 'Quantité ', {'label_attr': {'class': 'form-label required'}}) }}
+        {{ form_widget(form.quantite_ressource, {'attr': {'class': 'form-control', 'placeholder': 'Entrez la quantité'}}) }}
+        <div class="text-danger">{{ form_errors(form.quantite_ressource) }}</div>
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.unite_mesure, 'Unité de mesure ', {'label_attr': {'class': 'form-label required'}}) }}
+        {{ form_widget(form.unite_mesure, {'attr': {'class': 'form-control', 'placeholder': 'Entrez l\'unité'}}) }}
+        <div class="text-danger">{{ form_errors(form.unite_mesure) }}</div>
+    </div>
+
+    <div class="mb-3">
+    {{ form_label(form.date_ajout_ressource, 'Date d\'ajout *', {'label_attr': {'class': 'form-label required'}}) }}
+    {{ form_widget(form.date_ajout_ressource, {'attr': {'class': 'form-control' ~ (form.date_ajout_ressource.vars.errors|length > 0 ? ' is-invalid' : '')}}) }}
+    <div class="invalid-feedback">{{ form_errors(form.date_ajout_ressource) }}</div>
+</div>
+
+<div class="mb-3">
+    {{ form_label(form.date_expiration_ressource, 'Date d\'expiration', {'label_attr': {'class': 'form-label'}}) }}
+    {{ form_widget(form.date_expiration_ressource, {'attr': {'class': 'form-control' ~ (form.date_expiration_ressource.vars.errors|length > 0 ? ' is-invalid' : '')}}) }}
+    <div class="invalid-feedback">{{ form_errors(form.date_expiration_ressource) }}</div>
+</div>
+
+    <div class="mb-3">
+        {{ form_label(form.statut_ressource, 'Statut ', {'label_attr': {'class': 'form-label required'}}) }}
+        {{ form_widget(form.statut_ressource, {'attr': {'class': 'form-control', 'placeholder': 'Entrez le statut'}}) }}
+        <div class="text-danger">{{ form_errors(form.statut_ressource) }}</div>
+    </div>
+
+    <div class="mb-3">
+        {{ form_label(form.depot, 'Dépôt ', {'label_attr': {'class': 'form-label required'}}) }}
+        {{ form_widget(form.depot, {'attr': {'class': 'form-select'}}) }}
+        <div class="text-danger">{{ form_errors(form.depot) }}</div>
+    </div>
+
+    <div class="text-center">
+        <button type="submit" class="btn btn-primary">{{ button_label|default('Enregistrer') }}</button>
+
+{{ form_end(form) }}
+ 
+
+</div>
+
+ <br>
+
+ 
+<a class="btn btn-danger" href="{{ path('app_ressource_delete', {'id': ressource.id}) }}">delete</a>
+{% endblock %}
