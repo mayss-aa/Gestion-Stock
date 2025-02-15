@@ -11,9 +11,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
- final class RessourceController extends AbstractController
+final class RessourceController extends AbstractController
 {
-    #[Route ( '/ressource' , name: 'app_ressource_index')]
+    #[Route('/ressource', name: 'app_ressource_index')]
     public function index(RessourceRepository $ressourceRepository): Response
     {
         return $this->render('ressource/index.html.twig', [
@@ -36,22 +36,32 @@ use Symfony\Component\Routing\Attribute\Route;
         }
 
         return $this->render('ressource/ajout.html.twig', [
-            'ressource' => $ressource,
-            'form' => $form,
+            'title' => 'Ajouter une ressource',
+            'form' => $form->createView(),
         ]);
     }
 
-    #[Route('/ressource/{id}', name: 'app_ressource_show')]
-    public function show(Ressource $ressource): Response
+    #[Route('/ressource/{id}', name: 'app_ressource_show', requirements: ['id' => '\d+'])]
+    public function show(int $id, RessourceRepository $ressourceRepository): Response
     {
+        $ressource = $ressourceRepository->find($id);
+        if (!$ressource) {
+            throw $this->createNotFoundException('Ressource non trouvée.');
+        }
+
         return $this->render('ressource/show.html.twig', [
             'ressource' => $ressource,
         ]);
     }
 
-    #[Route('/ressource/{id}/edit', name: 'app_ressource_edit')]
-    public function edit(Request $request, Ressource $ressource, EntityManagerInterface $entityManager): Response
+    #[Route('/ressource/edit/{id}', name: 'app_ressource_edit', requirements: ['id' => '\d+'])]
+    public function edit(int $id, Request $request, RessourceRepository $ressourceRepository, EntityManagerInterface $entityManager): Response
     {
+        $ressource = $ressourceRepository->find($id);
+        if (!$ressource) {
+            throw $this->createNotFoundException('Ressource non trouvée.');
+        }
+
         $form = $this->createForm(RessourceType::class, $ressource);
         $form->handleRequest($request);
 
@@ -62,17 +72,23 @@ use Symfony\Component\Routing\Attribute\Route;
         }
 
         return $this->render('ressource/modifier.html.twig', [
+            'title' => 'Modifier la Ressource',
             'ressource' => $ressource,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
-    #[Route('/ressource/delete/{id}', name: 'app_ressource_delete')]
-    public function delete( Ressource $ressource, EntityManagerInterface $entityManager): Response
+    #[Route('/ressource/delete/{id}', name: 'app_ressource_delete', requirements: ['id' => '\d+'], methods: ['POST', 'DELETE'])]
+    public function delete(int $id, RessourceRepository $ressourceRepository, EntityManagerInterface $entityManager): Response
     {
-            $entityManager->remove($ressource);
-            $entityManager->flush();
- 
+        $ressource = $ressourceRepository->find($id);
+        if (!$ressource) {
+            throw $this->createNotFoundException('Ressource non trouvée.');
+        }
+
+        $entityManager->remove($ressource);
+        $entityManager->flush();
+
         return $this->redirectToRoute('app_ressource_index');
     }
 }

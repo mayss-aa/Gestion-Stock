@@ -1,48 +1,155 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="Your website description here">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        
-        {% block stylesheets %}
-        <!-- Google Web Fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&family=Raleway:wght@600;800&display=swap" rel="stylesheet"> 
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>{% block title %}ArdhiSmart{% endblock %}</title>
+  {% block stylesheets %}
+  <link rel="stylesheet" href="{{ asset('Dash_Admin/assets/vendors/mdi/css/materialdesignicons.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('Dash_Admin/assets/vendors/css/vendor.bundle.base.css') }}">
+  <link rel="stylesheet" href="{{ asset('Dash_Admin/assets/vendors/jvectormap/jquery-jvectormap.css') }}">
+  <link rel="stylesheet" href="{{ asset('Dash_Admin/assets/vendors/flag-icon-css/css/flag-icon.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('Dash_Admin/assets/vendors/owl-carousel-2/owl.carousel.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('Dash_Admin/assets/vendors/owl-carousel-2/owl.theme.default.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('Dash_Admin/assets/css/style.css') }}">
+  <link rel="shortcut icon" href="{{ asset('Dash_Admin/assets/images/log-removebg-preview.png') }}" />
+  {% endblock %}
+</head>
+<body>
+  <div class="container-scroller">
+    <!-- Sidebar -->
+    <aside class="sidebar sidebar-offcanvas" id="sidebar">
+      <div class="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
+        <a class="sidebar-brand brand-logo" href="{{ path('backoffice_depot_index') }}">
+          <img src="{{ asset('Dash_Admin/assets/images/auth/logo.png') }}" alt="Logo">
+        </a>
+        <a class="sidebar-brand brand-logo-mini" href="{{ path('backoffice_depot_index') }}">
+          <img src="{{ asset('Dash_Admin/assets/images/auth/logo.png') }}" alt="Logo">
+        </a>
+      </div>
+      <nav aria-label="Sidebar Navigation">
+        <ul class="nav">
+          <!-- Navigation Items -->
+          <li class="nav-item nav-category">
+            <span class="nav-link">Gestions</span>
+          </li>
 
-        <!-- Icon Font Stylesheet -->
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-        
-        <!-- Libraries Stylesheet -->
-        <link href="{{ asset('Front/assets/lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
-        <link href="{{ asset('Front/assets/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+          <!-- Dashboard -->
+          <li class="nav-item menu-items">
+            <a class="nav-link" href="{{ path('backoffice_depot_index') }}">
+              <span class="menu-icon">
+                <i class="mdi mdi-speedometer"></i>
+              </span>
+              <span class="menu-title">Dashboard</span>
+            </a>
+          </li>
 
-        <!-- Customized Bootstrap Stylesheet -->
-        <link href="{{ asset('Front/assets/css/bootstrap.min.css') }}" rel="stylesheet">
+          <!-- Depot Section -->
+          <li class="nav-item menu-items">
+            <a class="nav-link" data-toggle="collapse" href="#depot" aria-expanded="false" aria-controls="depot">
+              <span class="menu-icon">
+                <i class="mdi mdi-account"></i>
+              </span>
+              <span class="menu-title">Depots</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="depot">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"><a class="nav-link" href="{{ path('backoffice_depot_index') }}">Afficher</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ path('backoffice_depot_new') }}">Ajouter</a></li>
+              </ul>
+            </div>
+          </li>
 
-        <!-- Template Stylesheet -->
-        <link href="{{ asset('Front/assets/css/style.css') }}" rel="stylesheet">
-        {% endblock %}
-        
-        {% block javascripts %}
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-            <script src="{{ asset('Front/assets/lib/easing/easing.min.js') }}"></script>
-            <script src="{{ asset('Front/assets/lib/waypoints/waypoints.min.js') }}"></script>
-            <script src="{{ asset('Front/assets/lib/lightbox/js/lightbox.min.js') }}"></script>
-            <script src="{{ asset('Front/assets/lib/owlcarousel/owl.carousel.min.js') }}"></script>
+          <!-- Ressources Section -->
+          <li class="nav-item menu-items">
+            <a class="nav-link" data-toggle="collapse" href="#ressources" aria-expanded="false" aria-controls="ressources">
+              <span class="menu-icon">
+                <i class="mdi mdi-contacts"></i>
+              </span>
+              <span class="menu-title">Ressources</span>
+              <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="ressources">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"><a class="nav-link" href="{{ path('backoffice_ressource_index') }}">Afficher</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ path('backoffice_ressource_new') }}">Ajouter</a></li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </nav>
+    </aside>
 
-            <!-- Template Javascript -->
-            <script src="{{ asset('Front/assets/js/main.js') }}"></script>
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}
-        <!-- Your content goes here -->
-        {% endblock %}
-    </body>
+    <!-- Main Content Wrapper -->
+    <div class="container-fluid page-body-wrapper">
+      <!-- Top Navigation Bar -->
+      <header class="navbar p-0 fixed-top d-flex flex-row">
+        <div class="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
+          <a class="navbar-brand brand-logo-mini" href="{{ path('backoffice_depot_index') }}">
+            <img src="{{ asset('Dash_Admin/assets/images/auth/logo.png') }}" alt="Logo">
+          </a>
+        </div>
+        <div class="navbar-menu-wrapper flex-grow d-flex align-items-stretch">
+          <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+            <span class="mdi mdi-menu"></span>
+          </button>
+          <form class="nav-link mt-2 mt-md-0 d-none d-lg-flex search w-100">
+            <input type="text" class="form-control" placeholder="Search products">
+          </form>
+          <ul class="navbar-nav navbar-nav-right">
+            <li class="nav-item nav-settings d-none d-lg-block">
+              <a class="nav-link" href="#">
+                <i class="mdi mdi-view-grid"></i>
+              </a>
+            </li>
+            <li class="nav-item dropdown border-left">
+              <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                <i class="mdi mdi-email"></i>
+                <span class="count bg-success"></span>
+              </a>
+            </li>
+            <li class="nav-item dropdown border-left">
+              <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                <i class="mdi mdi-bell"></i>
+                <span class="count bg-danger"></span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </header>
+
+      <!-- Main Panel -->
+      <main class="main-panel">
+        <div class="content-wrapper">
+          {% block body %}
+          {% endblock %}
+        </div>
+        <footer class="footer">
+          <div class="d-sm-flex justify-content-center justify-content-sm-between">
+           <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © bootstrapdash.com 2020</span>
+              <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center"> Free <a href="https://www.bootstrapdash.com/bootstrap-admin-template/" target="_blank">Bootstrap admin templates</a> from Bootstrapdash.com</span>
+            
+          </div>
+        </footer>
+      </main>
+    </div>
+  </div>
+
+  {% block javascript %}
+  <script src="{{ asset('Dash_Admin/assets/vendors/js/vendor.bundle.base.js') }}"></script>
+  <script src="{{ asset('Dash_Admin/assets/vendors/chart.js/Chart.min.js') }}"></script>
+  <script src="{{ asset('Dash_Admin/assets/vendors/progressbar.js/progressbar.min.js') }}"></script>
+  <script src="{{ asset('Dash_Admin/assets/vendors/jvectormap/jquery-jvectormap.min.js') }}"></script>
+  <script src="{{ asset('Dash_Admin/assets/vendors/jvectormap/jquery-jvectormap-world-mill-en.js') }}"></script>
+  <script src="{{ asset('Dash_Admin/assets/vendors/owl-carousel-2/owl.carousel.min.js') }}"></script>
+  <script src="{{ asset('Dash_Admin/assets/js/off-canvas.js') }}"></script>
+  <script src="{{ asset('Dash_Admin/assets/js/hoverable-collapse.js') }}"></script>
+  <script src="{{ asset('Dash_Admin/assets/js/misc.js') }}"></script>
+  <script src="{{ asset('Dash_Admin/assets/js/settings.js') }}"></script>
+  <script src="{{ asset('Dash_Admin/assets/js/todolist.js') }}"></script>
+  <script src="{{ asset('Dash_Admin/assets/js/dashboard.js') }}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  {% endblock %}
+</body>
 </html>

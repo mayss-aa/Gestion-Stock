@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <div class="main-panel">
+    <div class="content-wrapper">
+      <div class="page-header">
+        <h3 class="page-title">Créer un Nouveau Dépôt</h3>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Création</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Dépôt</li>
+          </ol>
+        </nav>
+      </div>
+      <div class="row">
+        <div class="col-12 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              {{ form_start(form) }}
+              {{ form_row(form.nom_depot) }}
+              {{ form_row(form.localisation_depot) }}
+              {{ form_row(form.capacite_depot) }}
+              {{ form_row(form.unite_cap_depot) }}
+              {{ form_row(form.type_stockage_depot) }}
+              {{ form_row(form.statut_depot) }}
+              <button type="submit" class="btn btn-primary">Créer le Dépôt</button>
+              {{ form_end(form) }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
