@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Controller;
-
 use App\Entity\Depot;
 use App\Form\DepotType;
 use App\Repository\DepotRepository;
@@ -9,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route; // Utilise l'annotation pour les routes
+use Symfony\Component\Routing\Annotation\Route;
 
 final class DepotController extends AbstractController
 {
@@ -18,7 +17,7 @@ final class DepotController extends AbstractController
     public function index(DepotRepository $depotRepository): Response
     {
         // On récupère tous les dépôts de la base de données et on les passe à 'index.html.twig'
-        return $this->render('depot/index.html.twig', [
+        return $this->render('GestionStock/Frontoffice/depot/index.html.twig', [
             'depots' => $depotRepository->findAll(),
         ]);
     }
@@ -28,7 +27,7 @@ final class DepotController extends AbstractController
     public function listDepot(DepotRepository $depotRepository): Response
     {
         // Cette route fait exactement la même chose que 'app_depot_index' et affiche les dépôts dans 'index.html.twig'
-        return $this->render('depot/index.html.twig', [
+        return $this->render('GestionStock/Frontoffice/depot/index.html.twig', [
             'depots' => $depotRepository->findAll(),
         ]);
     }
@@ -73,7 +72,7 @@ final class DepotController extends AbstractController
         }
 
         // Retourner la vue 'ajout.html.twig' avec le formulaire
-        return $this->render('depot/ajout.html.twig', [
+        return $this->render('GestionStock/Frontoffice/depot/ajout.html.twig', [
             'title' => 'Ajouter un Dépôt',
             'form' => $form->createView(),
         ]);
@@ -88,27 +87,26 @@ final class DepotController extends AbstractController
         if (!$depot) {
             throw $this->createNotFoundException('Dépôt non trouvé.');
         }
-    
+
         // Créer un formulaire de modification pour le dépôt
         $form = $this->createForm(DepotType::class, $depot);
         $form->handleRequest($request);
-    
+
         // Si le formulaire est soumis et valide, on met à jour le dépôt
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-    
+
             // Rediriger vers la liste des dépôts après modification
             return $this->redirectToRoute('app_depot_list');
         }
-    
+
         // Retourner la vue 'modifier.html.twig' avec le formulaire et le dépôt
-        return $this->render('depot/modifier.html.twig', [
+        return $this->render('GestionStock/Frontoffice/depot/modifier.html.twig', [
             'title' => 'Modifier le Dépôt',
             'form' => $form->createView(),
-            'depot' => $depot,  // Ajoute ici la variable 'depot'
+            'depot' => $depot,
         ]);
     }
-    
 
     // Route pour supprimer un dépôt
     #[Route('/depot/delete/{id}', name: 'app_depot_delete', requirements: ['id' => '\d+'], methods: ['POST', 'DELETE'])]
@@ -139,7 +137,7 @@ final class DepotController extends AbstractController
         }
 
         // Retourner la vue 'show.html.twig' avec les détails du dépôt
-        return $this->render('depot/show.html.twig', [
+        return $this->render('GestionStock/Frontoffice/depot/show.html.twig', [
             'depot' => $depot,
         ]);
     }

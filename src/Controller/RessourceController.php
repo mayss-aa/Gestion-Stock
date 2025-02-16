@@ -9,14 +9,14 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 
 final class RessourceController extends AbstractController
 {
     #[Route('/ressource', name: 'app_ressource_index')]
     public function index(RessourceRepository $ressourceRepository): Response
     {
-        return $this->render('ressource/index.html.twig', [
+        return $this->render('GestionStock/Frontoffice/ressource/index.html.twig', [
             'ressources' => $ressourceRepository->findAll(),
         ]);
     }
@@ -35,7 +35,7 @@ final class RessourceController extends AbstractController
             return $this->redirectToRoute('app_ressource_index');
         }
 
-        return $this->render('ressource/ajout.html.twig', [
+        return $this->render('GestionStock/Frontoffice/ressource/ajout.html.twig', [
             'title' => 'Ajouter une ressource',
             'form' => $form->createView(),
         ]);
@@ -49,7 +49,7 @@ final class RessourceController extends AbstractController
             throw $this->createNotFoundException('Ressource non trouvée.');
         }
 
-        return $this->render('ressource/show.html.twig', [
+        return $this->render('GestionStock/Frontoffice/ressource/show.html.twig', [
             'ressource' => $ressource,
         ]);
     }
@@ -71,7 +71,7 @@ final class RessourceController extends AbstractController
             return $this->redirectToRoute('app_ressource_index');
         }
 
-        return $this->render('ressource/modifier.html.twig', [
+        return $this->render('GestionStock/Frontoffice/ressource/modifier.html.twig', [
             'title' => 'Modifier la Ressource',
             'ressource' => $ressource,
             'form' => $form->createView(),

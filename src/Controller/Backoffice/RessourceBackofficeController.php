@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller\Backoffice;
 
 use App\Entity\Ressource;
@@ -19,7 +20,7 @@ final class RessourceBackofficeController extends AbstractController
     #[Route('/', name: 'backoffice_ressource_index', methods: ['GET'])]
     public function index(RessourceRepository $ressourceRepository): Response
     {
-        return $this->render('backoffice/ressource/index.html.twig', [
+        return $this->render('gestionstock/Backoffice/ressource/index.html.twig', [
             'ressources' => $ressourceRepository->findAll(),
         ]);
     }
@@ -40,7 +41,7 @@ final class RessourceBackofficeController extends AbstractController
             return $this->redirectToRoute('backoffice_ressource_index');
         }
 
-        return $this->render('backoffice/ressource/ajouter.html.twig', [
+        return $this->render('gestionstock/Backoffice/ressource/ajouter.html.twig', [
             'title' => 'Ajouter une Ressource',
             'form' => $form->createView(),
         ]);
@@ -50,7 +51,7 @@ final class RessourceBackofficeController extends AbstractController
     #[Route('/{id}', name: 'backoffice_ressource_show', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function show(Ressource $ressource): Response
     {
-        return $this->render('backoffice/ressource/show.html.twig', [
+        return $this->render('gestionstock/Backoffice/ressource/show.html.twig', [
             'ressource' => $ressource,
         ]);
     }
@@ -69,7 +70,7 @@ final class RessourceBackofficeController extends AbstractController
             return $this->redirectToRoute('backoffice_ressource_index');
         }
 
-        return $this->render('backoffice/ressource/modifier.html.twig', [
+        return $this->render('gestionstock/Backoffice/ressource/modifier.html.twig', [
             'title' => 'Modifier la Ressource',
             'ressource' => $ressource,
             'form' => $form->createView(),

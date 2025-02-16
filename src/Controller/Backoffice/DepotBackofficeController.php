@@ -20,7 +20,7 @@ final class DepotBackofficeController extends AbstractController
     #[Route('/', name: 'backoffice_depot_index', methods: ['GET'])]
     public function index(DepotRepository $depotRepository): Response
     {
-        return $this->render('backoffice/depot/index.html.twig', [
+        return $this->render('gestionstock/Backoffice/depot/index.html.twig', [
             'depots' => $depotRepository->findAll(),
         ]);
     }
@@ -41,7 +41,7 @@ final class DepotBackofficeController extends AbstractController
             return $this->redirectToRoute('backoffice_depot_index');
         }
 
-        return $this->render('backoffice/depot/ajouter.html.twig', [
+        return $this->render('gestionstock/Backoffice/depot/ajouter.html.twig', [
             'title' => 'Ajouter un Dépôt',
             'form' => $form->createView(),
         ]);
@@ -51,7 +51,7 @@ final class DepotBackofficeController extends AbstractController
     #[Route('/{id}', name: 'backoffice_depot_show', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function show(Depot $depot): Response
     {
-        return $this->render('backoffice/depot/show.html.twig', [
+        return $this->render('gestionstock/Backoffice/depot/show.html.twig', [
             'depot' => $depot,
         ]);
     }
@@ -70,7 +70,7 @@ final class DepotBackofficeController extends AbstractController
             return $this->redirectToRoute('backoffice_depot_index');
         }
 
-        return $this->render('backoffice/depot/modifier.html.twig', [
+        return $this->render('gestionstock/Backoffice/depot/modifier.html.twig', [
             'title' => 'Modifier le Dépôt',
             'depot' => $depot,
             'form' => $form->createView(),
