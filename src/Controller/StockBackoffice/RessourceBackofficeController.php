@@ -77,21 +77,21 @@ final class RessourceBackofficeController extends AbstractController
         ]);
     }
 
-    // Supprimer une ressource
-    #[Route('/delete/{id}', name: 'backoffice_ressource_delete', requirements: ['id' => '\d+'], methods: ['POST'])]
-    public function delete(Request $request, Ressource $ressource, EntityManagerInterface $entityManager, CsrfTokenManagerInterface $csrfTokenManager): Response
-    {
-        $token = new CsrfToken('delete_ressource', $request->request->get('_token'));
-
-        if (!$csrfTokenManager->isTokenValid($token)) {
-            $this->addFlash('danger', 'Token CSRF invalide.');
-            return $this->redirectToRoute('backoffice_ressource_index');
-        }
-
+    #[Route('/{id}/delete', name: 'backoffice_ressource_delete', methods: ['POST'])]
+public function delete(Request $request, Ressource $ressource, EntityManagerInterface $entityManager): Response
+{
+    if ($this->isCsrfTokenValid('delete' . $ressource->getId(), $request->request->get('_token'))) {
+        // Remove the resource
         $entityManager->remove($ressource);
         $entityManager->flush();
 
-        $this->addFlash('success', 'Ressource supprimée avec succès.');
-        return $this->redirectToRoute('backoffice_ressource_index');
+        // Flash message for successful deletion
+        $this->addFlash('successmay', 'Ressource supprimée avec succès !');
     }
+
+    // Redirect to resource index page
+    return $this->redirectToRoute('backoffice_ressource_index');
+}
+
+
 }

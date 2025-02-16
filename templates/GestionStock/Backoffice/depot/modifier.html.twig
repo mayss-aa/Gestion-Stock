@@ -1,82 +1,84 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {# Page Header Section #}
-    <div class="page-header">
-        <h3 class="page-title">Mettre à Jour le Dépôt</h3>
-        <div class="header-actions"></div>
-    </div>
+    <div class="container-fluid py-5">
+        <div class="container py-5">
+            <div class="text-center w-100">
+                <h1 class="mb-4">Modifier un Dépôt</h1>
+            </div>
 
-    {# Breadcrumb Navigation #}
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Mise à jour</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Dépôt</li>
-        </ol>
-    </nav>
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+            <div class="row g-5">
+                <div class="col-md-12 col-lg-6 col-xl-7">
+                    <!-- Nom du Dépôt -->
+                    <div class="form-item">
+                        <label class="form-label my-3" for="nom_depot">Nom du Dépôt <sup>*</sup></label>
+                        {{ form_widget(form.nom_depot, {'attr': {'class': 'form-control', 'placeholder': 'Entrez le nom du dépôt'}}) }}
+                        {{ form_errors(form.nom_depot) }}
+                    </div>
 
-    {# Main Form Section #}
-    <div class="row">
-        <div class="col-lg-12 grid-margin stretch-card">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Modifier le Dépôt</h4>
-                    <div class="table-responsive" style="height: 400px; overflow-y: auto; overflow-x: auto;">
-                        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-
-                        {# Nom du Dépôt #}
-                        <div class="form-group row g-4 text-center align-items-center justify-content-center pt-4">
-                            <label class="form-label my-3" for="nom_depot">Nom du Dépôt <sup>*</sup></label>
-                            {{ form_widget(form.nom_depot, {'attr': {'class': 'form-control'}}) }}
-                            {{ form_errors(form.nom_depot) }}
+                    <div class="row g-4 pt-4">
+                        <!-- Localisation -->
+                        <div class="col-md-6">
+                            <div class="form-item">
+                                <label class="form-label my-3" for="localisation_depot">Localisation <sup>*</sup></label>
+                                {{ form_widget(form.localisation_depot, {'attr': {'class': 'form-control', 'placeholder': 'Entrez la localisation du dépôt'}}) }}
+                                {{ form_errors(form.localisation_depot) }}
+                            </div>
                         </div>
 
-                        {# Localisation du Dépôt #}
-                        <div class="form-group row g-4 text-center align-items-center justify-content-center pt-4">
-                            <label class="form-label my-3" for="localisation_depot">Localisation du Dépôt <sup>*</sup></label>
-                            {{ form_widget(form.localisation_depot, {'attr': {'class': 'form-control'}}) }}
-                            {{ form_errors(form.localisation_depot) }}
+                        <!-- Capacité -->
+                        <div class="col-md-6">
+                            <div class="form-item">
+                                <label class="form-label my-3" for="capacite_depot">Capacité <sup>*</sup></label>
+                                {{ form_widget(form.capacite_depot, {'attr': {'class': 'form-control', 'placeholder': 'Entrez la capacité du dépôt'}}) }}
+                                {{ form_errors(form.capacite_depot) }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-4 pt-4">
+                        <!-- Unité de Capacité -->
+                        <div class="col-md-6">
+                            <div class="form-item">
+                                <label class="form-label my-3" for="unite_cap_depot">Unité de Capacité <sup>*</sup></label>
+                                {{ form_widget(form.unite_cap_depot, {'attr': {'class': 'form-control', 'placeholder': 'Sélectionnez l\'unité de capacité'}}) }}
+                                {{ form_errors(form.unite_cap_depot) }}
+                            </div>
                         </div>
 
-                        {# Capacité du Dépôt #}
-                        <div class="form-group row g-4 text-center align-items-center justify-content-center pt-4">
-                            <label class="form-label my-3" for="capacite_depot">Capacité du Dépôt <sup>*</sup></label>
-                            {{ form_widget(form.capacite_depot, {'attr': {'class': 'form-control'}}) }}
-                            {{ form_errors(form.capacite_depot) }}
+                        <!-- Type de Stockage -->
+                        <div class="col-md-6">
+                            <div class="form-item">
+                                <label class="form-label my-3" for="type_stockage_depot">Type de Stockage <sup>*</sup></label>
+                                {{ form_widget(form.type_stockage_depot, {'attr': {'class': 'form-control', 'placeholder': 'Sélectionnez le type de stockage'}}) }}
+                                {{ form_errors(form.type_stockage_depot) }}
+                            </div>
                         </div>
+                    </div>
 
-                        {# Unité de Capacité #}
-                        <div class="form-group row g-4 text-center align-items-center justify-content-center pt-4">
-                            <label class="form-label my-3" for="unite_cap_depot">Unité de Capacité <sup>*</sup></label>
-                            {{ form_widget(form.unite_cap_depot, {'attr': {'class': 'form-select'}}) }}
-                            {{ form_errors(form.unite_cap_depot) }}
+                    <div class="row g-4 pt-4">
+                        <!-- Statut du Dépôt -->
+                        <div class="col-md-6">
+                            <div class="form-item">
+                                <label class="form-label my-3" for="statut_depot">Statut <sup>*</sup></label>
+                                {{ form_widget(form.statut_depot, {'attr': {'class': 'form-control', 'placeholder': 'Sélectionnez le statut du dépôt'}}) }}
+                                {{ form_errors(form.statut_depot) }}
+                            </div>
                         </div>
+                    </div>
 
-                        {# Type de Stockage #}
-                        <div class="form-group row g-4 text-center align-items-center justify-content-center pt-4">
-                            <label class="form-label my-3" for="type_stockage_depot">Type de Stockage <sup>*</sup></label>
-                            {{ form_widget(form.type_stockage_depot, {'attr': {'class': 'form-select'}}) }}
-                            {{ form_errors(form.type_stockage_depot) }}
-                        </div>
-
-                        {# Statut du Dépôt #}
-                        <div class="form-group row g-4 text-center align-items-center justify-content-center pt-4">
-                            <label class="form-label my-3" for="statut_depot">Statut du Dépôt <sup>*</sup></label>
-                            {{ form_widget(form.statut_depot, {'attr': {'class': 'form-select'}}) }}
-                            {{ form_errors(form.statut_depot) }}
-                        </div>
-
-                        {# Submit Button #}
-                        <div class="form-group row g-4 text-center align-items-center justify-content-center pt-4">
-                            <button type="submit" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary" id="valider-button">
+                    <!-- Submit Button -->
+                    <div class="row g-4 pt-4">
+                        <div class="col-12 text-center">
+                            <button type="submit" class="btn btn-primary py-3 px-4 text-uppercase w-100" id="valider-button" formaction="{{ path('backoffice_depot_edit', {'id': depot.id}) }}">
                                 Mettre à jour
                             </button>
                         </div>
-
-                        {{ form_end(form) }}
                     </div>
                 </div>
             </div>
+            {{ form_end(form) }}
         </div>
     </div>
 {% endblock %}

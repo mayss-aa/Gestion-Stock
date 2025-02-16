@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid py-5">
+        <div class="container py-5">
+            <div class="text-center w-100">
+                <h1 class="mb-4">{{ title }}</h1>
+            </div>
+
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+            <div class="row g-5">
+                <div class="col-md-12 col-lg-6 col-xl-7">
+                    <!-- Form Fields -->
+                    {{ form_widget(form) }}
+                    <button type="submit" class="btn btn-primary py-3 px-4 text-uppercase w-100">
+                        {{ title == 'Ajouter un Dépôt' ? 'Ajouter' : 'Mettre à jour' }}
+                    </button>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
