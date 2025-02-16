@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Backoffice;
+namespace App\Controller\StockBackoffice;
 
 use App\Entity\Ressource;
 use App\Form\RessourceType;

@@ -9,7 +9,7 @@
     </div>
     <!-- Spinner End -->
 
-   <!-- Navbar start -->
+       <!-- Navbar start -->
         <div class="container-fluid fixed-top">
             <div class="container topbar bg-primary d-none d-lg-block">
                 <div class="d-flex justify-content-between">
@@ -37,18 +37,18 @@
                                 <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Zone</a>
                                 <div class="dropdown-menu m-0 bg-secondary rounded-0">
                                     <a href="cart.html" class="dropdown-item active">Ajouter des zones</a>
-                                    <a href="chackout.html" class="dropdown-item ">Modifier les zones</a>
+                           
                                     <a href="testimonial.html" class="dropdown-item">Liste les zones</a>
-                                    <a href="testimonial.html" class="dropdown-item">Supprimer les zones</a>
+                            
                                 </div>
                             </div> 
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Plante</a>
                                 <div class="dropdown-menu m-0 bg-secondary rounded-0">
                                     <a href="cart.html" class="dropdown-item ">Ajouter des plantes</a>
-                                    <a href="chackout.html" class="dropdown-item ">Modifier les plantes</a>
+                                
                                     <a href="testimonial.html" class="dropdown-item">Liste les plantes</a>
-                                    <a href="testimonial.html" class="dropdown-item">Supprimer les plantes</a>
+                        
                                 </div>
                             </div> 
 
@@ -56,22 +56,22 @@
                                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Categorie</a>
                                 <div class="dropdown-menu m-0 bg-secondary rounded-0">
                                     <a href="cart.html" class="dropdown-item ">Ajouter des Categories</a>
-                                    <a href="chackout.html" class="dropdown-item ">Modifier les Categories</a>
+                              
                                     <a href="testimonial.html" class="dropdown-item">Liste les Categories</a>
-                                    <a href="testimonial.html" class="dropdown-item">Supprimer les Categories</a>
+                                   
                                 </div>
                             </div> 
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Produit</a>
                                 <div class="dropdown-menu m-0 bg-secondary rounded-0">
                                     <a href="cart.html" class="dropdown-item ">Ajouter des Produit</a>
-                                    <a href="chackout.html" class="dropdown-item ">Modifier les produits</a>
+                                
                                     <a href="testimonial.html" class="dropdown-item">Liste les produits</a>
-                                    <a href="testimonial.html" class="dropdown-item">Supprimer les produits</a>
+                                    
                                 </div>
                             </div>                            
                         
-                                         
+                     
       
       <div class="nav-item dropdown">
     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Depots</a>
@@ -83,6 +83,57 @@
         <a href="{{ path('app_depot_list') }}" class="dropdown-item">Liste des dépôts</a>
     </div>
 </div>
+
+
+
+<div class="nav-item dropdown">
+    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Ressource</a>
+    <div class="dropdown-menu m-0 bg-secondary rounded-0">
+        <!-- Lien vers la page Ajouter une Ressource -->
+        <a href="{{ path('app_ressource_new') }}" class="dropdown-item">Ajouter des Ressources</a>
+
+        <!-- Lien vers la liste des Ressources -->
+        <a href="{{ path('app_ressource_index') }}" class="dropdown-item">Liste des Ressources</a>
+    </div>
+</div>
+
+
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Machine</a>
+                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                    <a href="cart.html" class="dropdown-item ">Ajouter des machines</a>
+                               
+                                    <a href="testimonial.html" class="dropdown-item">Liste les machines</a>
+                                 
+                                </div>
+                            </div> 
+                            
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Maintenance</a>
+                                <div class="dropdown-menu m-0 bg-secondary rounded-0">
+                                    <a href="cart.html" class="dropdown-item ">Ajouter des maintenances</a>
+                                   
+                                    <a href="testimonial.html" class="dropdown-item">Liste les maintenances</a>
+                                    
+                                </div>
+                            </div> 
+                    
+                        </div>
+                        <div class="d-flex m-3 me-0">
+                            <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
+                            <a href="#" class="position-relative me-4 my-auto">
+                                <i class="fa fa-shopping-bag fa-2x"></i>
+                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
+                            </a>
+                            <a href="#" class="my-auto">
+                                <i class="fas fa-user fa-2x"></i>
+                            </a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!-- Navbar End -->
 
 
 

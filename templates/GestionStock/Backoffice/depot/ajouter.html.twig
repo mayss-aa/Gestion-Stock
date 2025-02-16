@@ -1,34 +1,104 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-  <div class="main-panel">
-    <div class="content-wrapper">
-      <div class="page-header">
-        <h3 class="page-title">Créer un Nouveau Dépôt</h3>
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Création</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Dépôt</li>
-          </ol>
-        </nav>
-      </div>
-      <div class="row">
-        <div class="col-12 grid-margin stretch-card">
-          <div class="card">
-            <div class="card-body">
-              {{ form_start(form) }}
-              {{ form_row(form.nom_depot) }}
-              {{ form_row(form.localisation_depot) }}
-              {{ form_row(form.capacite_depot) }}
-              {{ form_row(form.unite_cap_depot) }}
-              {{ form_row(form.type_stockage_depot) }}
-              {{ form_row(form.statut_depot) }}
-              <button type="submit" class="btn btn-primary">Créer le Dépôt</button>
-              {{ form_end(form) }}
-            </div>
-          </div>
+
+<!-- Checkout Page Start -->
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <div class="text-center w-100">
+            <h1 class="mb-4">Créer un Nouveau Dépôt</h1>
         </div>
-      </div>
+
+        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+        <div class="row g-5">
+            <div class="col-md-12 col-lg-6 col-xl-7">
+                <!-- Nom du Dépôt -->
+                <div class="form-item">
+                    <label class="form-label my-3" for="nom_depot">Nom du Dépôt <sup>*</sup></label>
+                    {{ form_widget(form.nom_depot, {'attr': {'class': 'form-control'}}) }}
+                    {% if form.nom_depot.vars.errors is not empty %}
+                        {% for error in form.nom_depot.vars.errors|slice(0,1) %}
+                            <p style="color: red;">{{ error.message }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md-12 col-lg-6 col-xl-7">
+                <!-- Localisation du Dépôt -->
+                <div class="form-item">
+                    <label class="form-label my-3" for="localisation_depot">Localisation du Dépôt <sup>*</sup></label>
+                    {{ form_widget(form.localisation_depot, {'attr': {'class': 'form-control'}}) }}
+                    {% if form.localisation_depot.vars.errors is not empty %}
+                        {% for error in form.localisation_depot.vars.errors|slice(0,1) %}
+                            <p style="color: red;">{{ error.message }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md-12 col-lg-6 col-xl-7">
+                <!-- Capacité du Dépôt -->
+                <div class="form-item">
+                    <label class="form-label my-3" for="capacite_depot">Capacité du Dépôt <sup>*</sup></label>
+                    {{ form_widget(form.capacite_depot, {'attr': {'class': 'form-control'}}) }}
+                    {% if form.capacite_depot.vars.errors is not empty %}
+                        {% for error in form.capacite_depot.vars.errors|slice(0,1) %}
+                            <p style="color: red;">{{ error.message }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md-12 col-lg-6 col-xl-7">
+                <!-- Unité de Capacité -->
+                <div class="form-item">
+                    <label class="form-label my-3" for="unite_cap_depot">Unité de Capacité <sup>*</sup></label>
+                    {{ form_widget(form.unite_cap_depot, {'attr': {'class': 'form-select'}}) }}
+                    {% if form.unite_cap_depot.vars.errors is not empty %}
+                        {% for error in form.unite_cap_depot.vars.errors|slice(0,1) %}
+                            <p style="color: red;">{{ error.message }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md-12 col-lg-6 col-xl-7">
+                <!-- Type de Stockage -->
+                <div class="form-item">
+                    <label class="form-label my-3" for="type_stockage_depot">Type de Stockage <sup>*</sup></label>
+                    {{ form_widget(form.type_stockage_depot, {'attr': {'class': 'form-select'}}) }}
+                    {% if form.type_stockage_depot.vars.errors is not empty %}
+                        {% for error in form.type_stockage_depot.vars.errors|slice(0,1) %}
+                            <p style="color: red;">{{ error.message }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md-12 col-lg-6 col-xl-7">
+                <!-- Statut du Dépôt -->
+                <div class="form-item">
+                    <label class="form-label my-3" for="statut_depot">Statut du Dépôt <sup>*</sup></label>
+                    {{ form_widget(form.statut_depot, {'attr': {'class': 'form-select'}}) }}
+                    {% if form.statut_depot.vars.errors is not empty %}
+                        {% for error in form.statut_depot.vars.errors|slice(0,1) %}
+                            <p style="color: red;">{{ error.message }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md-12 col-lg-6 col-xl-7">
+                <!-- Submit Button -->
+                <div class="form-item">
+                    <button type="submit" class="btn btn-primary w-100">Créer le Dépôt</button>
+                </div>
+            </div>
+        </div>
+
+        {{ form_end(form) }}
     </div>
-  </div>
+</div>
+<!-- Checkout Page End -->
 {% endblock %}
