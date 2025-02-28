@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid py-5">
+        <div class="container py-5">
+            <div class="text-center w-100">
+                <h1 class="mb-4">Modifier une Machine</h1>
+            </div>
+
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+            <div class="row g-5">
+                <div class="col-md-12 col-lg-6 col-xl-7">
+                    <div class="form-item">
+                        <label class="form-label my-3" for="nom_machine">Nom de la Machine <sup>*</sup></label>
+                        {{ form_widget(form.nom_machine, {'attr': {'class': 'form-control', 'placeholder': 'Entrez le nom de la machine'}}) }}
+                        {{ form_errors(form.nom_machine) }}
+                    </div>
+                    <div class="row g-4 pt-4">
+                        <div class="col-md-6">
+                            <div class="form-item">
+                                <label class="form-label my-3" for="etat_machine">État de la Machine <sup>*</sup></label>
+                                {{ form_widget(form.etat_machine, {'attr': {'class': 'form-control', 'placeholder': 'Entrez l\'état de la machine'}}) }}
+                                {{ form_errors(form.etat_machine) }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-item">
+                                <label class="form-label my-3" for="brand_machine">Marque <sup>*</sup></label>
+                                {{ form_widget(form.brand_machine, {'attr': {'class': 'form-control', 'placeholder': 'Entrez la marque'}}) }}
+                                {{ form_errors(form.brand_machine) }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-item">
+                                <label class="form-label my-3" for="date_achat">Date d\'achat <sup>*</sup></label>
+                                {{ form_widget(form.date_achat, {'attr': {'class': 'form-control', 'placeholder': 'Entrez la date d\'achat'}}) }}
+                                {{ form_errors(form.date_achat) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row g-4 pt-4">
+                        <div class="col-12 text-center">
+                            <button type="submit" class="btn btn-primary py-3 px-4 text-uppercase w-100" id="valider-button" formaction="{{ path('backoffice_machine_edit', {'id': machine.id}) }}">
+                                Mettre à jour
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+        {% for message in app.flashes('successamen') %}
+    <div class="alert alert-success">
+        {{ message }}
+    </div>
+{% endfor %}
+
+{% for message in app.flashes('erroramen') %}
+    <div class="alert alert-danger">
+        {{ message }}
+    </div>
+{% endfor %}
+{% endblock %}

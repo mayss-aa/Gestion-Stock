@@ -1,0 +1,51 @@
+
+
+
+
+{% extends 'base.html.twig' %}
+{% block body%}
+        <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <div class="page-header">
+              <h3 class="page-title">Créer Nouveau</h3>
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="#">Création</a></li>
+                  <li class="breadcrumb-item active" aria-current="page"></li>
+                </ol>
+              </nav>
+            </div>
+            <div class="row">
+
+              <div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                           
+    <h1>créer nouveau role</h1>
+
+    {{ form_start(frole,{'attr': {'novalidate': 'novalidate'}}) }}
+        
+        {{ form_row(frole.nom_role) }} 
+        {{ form_row(frole.description) }}
+
+        <button type="submit" class="btn btn-primary">créer</button>
+        
+        {{ form_end(frole) }}
+        
+       
+                  </div>
+                </div>
+              </div>
+     {% for message in app.flashes('successrole') %}
+    <div class="alert alert-success">
+        {{ message }}
+    </div>
+{% endfor %}
+
+{% for message in app.flashes('errorrole') %}
+    <div class="alert alert-danger">
+        {{ message }}
+    </div>
+{% endfor %}
+{% endblock %}

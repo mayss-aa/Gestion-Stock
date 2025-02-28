@@ -1,0 +1,65 @@
+{% extends 'basefront.html.twig' %}
+
+
+
+{% block title %}Liste des Machines{% endblock %}
+
+{% block body %}
+       
+        <!-- Single Page Header start -->
+        <div class="container-fluid page-header py-5">
+            <h1 class="text-center text-white display-6">Gestion des Machines</h1>
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Machine</a></li>
+                <li class="breadcrumb-item active text-white">Afficher Machines</li>
+            </ol>
+        </div>
+        <!-- Single Page Header End -->
+
+<!-- Machines List Start -->
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <div class="text-center w-100">
+            <h1 class="mb-4 mt-5">Liste des Machines</h1>
+        </div>
+
+        <table class="table table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th class="text-center">ID</th>
+                    <th class="text-center">Nom</th>
+                    <th class="text-center">État</th>
+                    <th class="text-center">Marque</th>
+                    <th class="text-center">Date d'achat</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for machine in machines %}
+                    <tr class="align-middle">
+                        <td class="text-center">{{ machine.id }}</td>
+                        <td class="text-center">{{ machine.nomMachine }}</td>
+                        <td class="text-center">{{ machine.etatMachine }}</td>
+                        <td class="text-center">{{ machine.brandMachine }}</td>
+                        <td class="text-center">{{ machine.dateAchat ? machine.dateAchat|date('d/m/Y') : 'N/A' }}</td>
+                        <td class="text-center">
+                            <a href="{{ path('machine_edit', {id: machine.id}) }}" class="btn btn-primary btn-sm">Modifier</a>
+                            <form action="{{ path('machine_delete', {id: machine.id}) }}" method="post" style="display:inline-block;">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ machine.id) }}">
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette machine ?');">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center">Aucune machine enregistrée.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- Machines List End -->
+
+{% endblock %}

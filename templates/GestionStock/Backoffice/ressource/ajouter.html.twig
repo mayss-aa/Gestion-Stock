@@ -1,0 +1,131 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<!-- Checkout Page Start -->
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <div class="text-center w-100">
+            <h1 class="mb-4">Ajouter une Nouvelle Ressource</h1>
+        </div>
+
+        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+        <div class="row g-5">
+            <div class="col-md-12 col-lg-6 col-xl-7">
+                <!-- Nom de la Ressource -->
+                <div class="form-item">
+                    <label class="form-label my-3" for="nom_ressource">Nom de la Ressource <sup>*</sup></label>
+                    {{ form_widget(form.nom_ressource, {'attr': {'class': 'form-control'}}) }}
+                    {% if form.nom_ressource.vars.errors is not empty %}
+                        {% for error in form.nom_ressource.vars.errors|slice(0,1) %}
+                            <p style="color: red;">{{ error.message }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md-12 col-lg-6 col-xl-7">
+                <!-- Type de Ressource -->
+                <div class="form-item">
+                    <label class="form-label my-3" for="type_ressource">Type de Ressource <sup>*</sup></label>
+                    {{ form_widget(form.type_ressource, {'attr': {'class': 'form-select'}}) }}
+                    {% if form.type_ressource.vars.errors is not empty %}
+                        {% for error in form.type_ressource.vars.errors|slice(0,1) %}
+                            <p style="color: red;">{{ error.message }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md-12 col-lg-6 col-xl-7">
+                <!-- Quantité de la Ressource -->
+                <div class="form-item">
+                    <label class="form-label my-3" for="quantite_ressource">Quantité de la Ressource <sup>*</sup></label>
+                    {{ form_widget(form.quantite_ressource, {'attr': {'class': 'form-control'}}) }}
+                    {% if form.quantite_ressource.vars.errors is not empty %}
+                        {% for error in form.quantite_ressource.vars.errors|slice(0,1) %}
+                            <p style="color: red;">{{ error.message }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md-12 col-lg-6 col-xl-7">
+                <!-- Unité de Mesure -->
+                <div class="form-item">
+                    <label class="form-label my-3" for="unite_mesure">Unité de Mesure <sup>*</sup></label>
+                    {{ form_widget(form.unite_mesure, {'attr': {'class': 'form-select'}}) }}
+                    {% if form.unite_mesure.vars.errors is not empty %}
+                        {% for error in form.unite_mesure.vars.errors|slice(0,1) %}
+                            <p style="color: red;">{{ error.message }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md-12 col-lg-6 col-xl-7">
+                <!-- Date d'ajout de la Ressource -->
+                <div class="form-item">
+                    <label class="form-label my-3" for="date_ajout_ressource">Date d'Ajout <sup>*</sup></label>
+                    {{ form_widget(form.date_ajout_ressource, {'attr': {'class': 'form-control'}}) }}
+                    {% if form.date_ajout_ressource.vars.errors is not empty %}
+                        {% for error in form.date_ajout_ressource.vars.errors|slice(0,1) %}
+                            <p style="color: red;">{{ error.message }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md-12 col-lg-6 col-xl-7">
+                <!-- Date d'expiration de la Ressource -->
+                <div class="form-item">
+                    <label class="form-label my-3" for="date_expiration_ressource">Date d'Expiration <sup>*</sup></label>
+                    {{ form_widget(form.date_expiration_ressource, {'attr': {'class': 'form-control'}}) }}
+                    {% if form.date_expiration_ressource.vars.errors is not empty %}
+                        {% for error in form.date_expiration_ressource.vars.errors|slice(0,1) %}
+                            <p style="color: red;">{{ error.message }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md-12 col-lg-6 col-xl-7">
+                <!-- Statut de la Ressource -->
+                <div class="form-item">
+                    <label class="form-label my-3" for="statut_ressource">Statut de la Ressource <sup>*</sup></label>
+                    {{ form_widget(form.statut_ressource, {'attr': {'class': 'form-select'}}) }}
+                    {% if form.statut_ressource.vars.errors is not empty %}
+                        {% for error in form.statut_ressource.vars.errors|slice(0,1) %}
+                            <p style="color: red;">{{ error.message }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md-12 col-lg-6 col-xl-7">
+                <!-- Dépôt -->
+                <div class="form-item">
+                    <label class="form-label my-3" for="depot">Dépôt <sup>*</sup></label>
+                    {{ form_widget(form.depot, {'attr': {'class': 'form-select'}}) }}
+                    {% if form.depot.vars.errors is not empty %}
+                        {% for error in form.depot.vars.errors|slice(0,1) %}
+                            <p style="color: red;">{{ error.message }}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md-12 col-lg-6 col-xl-7">
+                <!-- Submit Button -->
+                <div class="form-item">
+                    <button type="submit" class="btn btn-primary w-100">Ajouter la Ressource</button>
+                </div>
+            </div>
+        </div>
+
+        {{ form_end(form) }}
+    </div>
+</div>
+<!-- Checkout Page End -->
+
+{% endblock %}

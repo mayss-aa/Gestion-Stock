@@ -1,0 +1,73 @@
+{% extends 'basefront.html.twig' %}
+{% block body %}
+
+
+      
+        <!-- Single Page Header start -->
+        <div class="container-fluid produit py-5">
+            <h1 class="text-center text-white display-6">Gestion des categories</h1>
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Pages</a></li>
+                <li class="breadcrumb-item active text-white">Checkout</li>
+            </ol>
+        </div>
+        <!-- Single Page Header End -->
+        
+         <!-- Checkout Page Start -->
+        <h1 class="text-center my-4">liste des categories </h1>
+        <div class="container text-center">
+    <div class="table-responsive">
+
+    <table class="table table-striped table-hover shadow-sm border-0">
+        <thead class="thead-light">
+            <tr>
+                <th>Nom_categorie</th>
+                <th>Description_categorie</th>
+                 <th>categorie.saisonDeRecolte </th>
+                <th>categorie.temperatureIdeale</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for categorie in categories %}
+            <tr class="align-middle">
+                <td>{{ categorie.nomCategorie }}</td>
+                <td>{{ categorie.descriptionCategorie }}</td>
+                <td>{{ categorie.saisonDeRecolte ?? 'N/A' }}</td>
+                <td>{{ categorie.temperatureIdeale ?? 'N/A' }}</td>
+                
+                <td class="d-flex gap-2">
+                    <a href="{{ path('app_categorie_front_show', {'nom_categorie': categorie.nomCategorie})}}" class="btn btn-primary btn-sm">
+                        <i class="bi bi-eye"></i>
+                    </a>
+                    <a href="{{ path('app_categorie_front_edit', {'nom_categorie': categorie.nomCategorie}) }}" class="btn btn-warning btn-sm">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <form method="post" action="{{ path('app_categorie_front_delete', { 'nom_categorie': categorie.nomCategorie}) }}" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce dépôt ?');">
+                                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ categorie.nomCategorie) }}">
+                                                <button type="submit" class="btn btn-outline-danger">Supprimer</button>
+                                            </form>
+                </td>
+           
+
+
+                
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7"  class="text-center">aucun categorie trouvée</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    
+    <div class="mt-3">
+        <a href="{{ path('app_categorie_front_new') }}" class="btn btn-success">
+            <i class="bi bi-plus-circle"></i> Créer une nouvelle catégorie
+        </a>
+    </div>
+
+<!-- Checkout Page End -->
+
+    {% endblock %}

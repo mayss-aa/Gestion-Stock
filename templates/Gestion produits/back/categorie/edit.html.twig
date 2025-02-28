@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {# Page Header Section #}
+    <div class="page-header">
+        <h3 class="page-title">Modifier Catégorie</h3>
+        <div class="header-actions"></div>
+    </div>
+
+    {# Breadcrumb Navigation #}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Utilisateurs</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Catégories</li>
+        </ol>
+    </nav>
+
+    {# Main Form Section #}
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Catégories</h4>
+                    <div class="table-responsive" style="height: 400px; overflow-y: auto; overflow-x: auto;">
+                        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+                        {# Category Name Field #}
+                        <div class="form-group row g-4 text-center align-items-center justify-content-center pt-4">
+                            <label class="form-label my-3" for="id_categorie">Nom de la catégorie <sup>*</sup></label>
+                            {{ form_widget(form.nom_categorie, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.nom_categorie) }}
+                        </div>
+
+                        {# Category Description Field #}
+                        <div class="form-group row g-4 text-center align-items-center justify-content-center pt-4">
+                            <label class="form-label my-3" for="description_categorie">Description de la catégorie <sup>*</sup></label>
+                            {{ form_widget(form.description_categorie, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.description_categorie) }}
+                        </div>
+                        
+                    <!-- saisonDeRecolte  -->
+                    
+                     <div class="form-group row g-4 text-center align-items-center justify-content-center pt-4">
+                        <label class="form-label my-3" for="saisonDeRecolte">saisonDeRecolte <sup>*</sup></label>
+                        {{ form_widget(form.saisonDeRecolte, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.saisonDeRecolte) }}
+                    </div>
+               
+                
+                    <!-- temperature  -->
+                         <div class="form-group row g-4 text-center align-items-center justify-content-center pt-4">
+                        <label class="form-label my-3" for="temperatureIdeale">temperature Ideale <sup>*</sup></label>
+                        {{ form_widget(form.temperatureIdeale, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_errors(form.temperatureIdeale) }}
+                    </div>
+                </div>
+                 </div>
+                        {# Submit Button #}
+                        <div class="form-group row g-4 text-center align-items-center justify-content-center pt-4">
+                            <button type="submit" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary" id="valider-button">
+                                Mettre à jour
+                            </button>
+                        </div>
+
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

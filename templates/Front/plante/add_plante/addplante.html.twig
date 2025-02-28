@@ -1,0 +1,84 @@
+{% extends 'basefront.html.twig' %}
+{% block body %}
+
+
+
+
+
+        <!-- Single Page Header start -->
+        <div class="container-fluid page-header-plante py-5">
+            <h1 class="text-center text-white display-6">Gestion de plante</h1>
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item"><a href="#"></a></li>
+                <li class="breadcrumb-item"><a href="#"></a></li>
+                <li class="breadcrumb-item active text-white"></li>
+            </ol>
+        </div>
+        <!-- Single Page Header End -->
+
+
+<!-- Checkout Page Start -->
+        <div class="container-fluid py-5">
+            <div class="container py-5">
+                <div class="text-center w-100">
+                    <h1 class="mb-4">{{ is_edit ? 'Modifier une plante' : 'Ajouter une plante' }}</h1>
+                </div>
+                {{ form_start(AddPlante, {'attr': {'novalidate': 'novalidate'}}) }}
+                <div class="row g-5">
+                    <div class="col-md-12 col-lg-12 col-xl-13">
+                        <div class="form-item">
+                            <label class="form-label my-3">Nom <sup>*</sup></label>
+                            {{ form_widget(AddPlante.nom_plante, {'attr': {'class': 'form-control'}}) }}
+                            {% if AddPlante.nom_plante.vars.errors is not empty %}
+                                {% for error in AddPlante.nom_plante.vars.errors|slice(0,1) %}
+                                    <p style="color: red;">{{ error.message }}</p>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label my-3">Date de Plantation <sup>*</sup></label>
+                            {{ form_widget(AddPlante.date_plantation, {'attr': {'class': 'form-control'}}) }}
+                            {% if AddPlante.date_plantation.vars.errors is not empty %}
+                                {% for error in AddPlante.date_plantation.vars.errors|slice(0,1) %}
+                                    <p style="color: red;">{{ error.message }}</p>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label my-3">Rendement Estimé <sup>*</sup></label>
+                            {{ form_widget(AddPlante.rendement_estime, {'attr': {'class': 'form-control'}}) }}
+                            {% if AddPlante.rendement_estime.vars.errors is not empty %}
+                                {% for error in AddPlante.rendement_estime.vars.errors|slice(0,1) %}
+                                    <p style="color: red;">{{ error.message }}</p>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-4 pt-4 text-end">
+                    <div class="col">
+                        <button type="submit" class="btn border-secondary py-3 px-4 text-uppercase text-primary w-auto">Valider</button>
+                    </div>
+                </div>
+                {{ form_end(AddPlante) }}
+            </div>
+        </div>
+<!-- Checkout Page End -->
+
+
+
+
+      
+        
+    <!-- JavaScript Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/lightbox/js/lightbox.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+    {% endblock %}
+

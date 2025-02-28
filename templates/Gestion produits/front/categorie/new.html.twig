@@ -1,0 +1,92 @@
+{% extends 'basefront.html.twig' %}
+{% block body %}
+
+
+       
+        <!-- Single Page Header start -->
+        <div class="container-fluid page-header-zone py-5">
+            <h1 class="text-center text-white display-6">Gestion des categories</h1>
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Pages</a></li>
+                <li class="breadcrumb-item active text-white">Checkout</li>
+            </ol>
+        </div>
+        <!-- Single Page Header End -->
+        
+         <!-- Checkout Page Start -->
+        <div class="container-fluid py-5">
+            <div class= "container py-5">
+                 <div class="text-center w-100">
+                    <h1 class="mb-4">Ajouter une categorie</h1>
+                </div>
+
+                    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+                    <div class="row g-5">
+                        <div class="col-md-12 col-lg-6 col-xl-7">
+                            <!-- Nom de la categorie -->
+                            <div class="form-item">
+                                <label class="form-label my-3" for="nom_categorie">Nom de la categorie <sup>*</sup></label>
+                                {{ form_widget(form.nom_categorie, {'attr': {'class': 'form-control'}}) }}
+                                {% if form.nom_categorie.vars.errors is not empty %}
+                            {% for error in form.nom_categorie.vars.errors|slice(0,1) %}
+                                <p style="color: red;">{{ error.message }}</p>
+                            {% endfor %}
+                        {% endif %}
+
+                            </div>
+                             </div>
+                         <div class="col-md-12 col-lg-6 col-xl-7">
+                         <!-- Description de la categorie -->
+                            <div class="form-item">
+                                <label class="form-label my-3" for="description_categorie">description de la categorie <sup>*</sup></label>
+                                {{ form_widget(form.description_categorie, {'attr': {'class': 'form-control'}}) }}
+                                {% if form.description_categorie.vars.errors is not empty %}
+                            {% for error in form.description_categorie.vars.errors|slice(0,1) %}
+                                <p style="color: red;">{{ error.message }}</p>
+                            {% endfor %}
+                        {% endif %}
+                            </div>
+                             </div>
+                        <div class="col-md-12 col-lg-6 col-xl-7">
+                         <!-- Saison de recolte -->
+                            <div class="form-item">
+                                <label class="form-label my-3" for="saisonDeRecolte">Saison de recolte  <sup>*</sup></label>
+                                {{ form_widget(form.saisonDeRecolte, {'attr': {'class': 'form-control'}}) }}
+                                {% if form.saisonDeRecolte.vars.errors is not empty %}
+                            {% for error in form.saisonDeRecolte.vars.errors|slice(0,1) %}
+                                <p style="color: red;">{{ error.message }}</p>
+                            {% endfor %}
+                        {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-6 col-xl-7">
+                         <!-- Temperature Ideale  -->
+                            <div class="form-item">
+                                <label class="form-label my-3" for="temperatureIdeale">temperatur eIdeale <sup>*</sup></label>
+                                {{ form_widget(form.temperatureIdeale, {'attr': {'class': 'form-control'}}) }}
+                                {% if form.temperatureIdeale.vars.errors is not empty %}
+                                   {% for error in form.temperatureIdeale.vars.errors|slice(0,1) %}
+                                       <p style="color: red;">{{ error.message }}</p>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                            
+                        <div class="row g-4 pt-4 text-end">
+                            <div class="col">
+                                <button type="submit" class="btn border-secondary py-3 px-4 text-uppercase text-primary w-auto">Valider</button>
+                            </div>
+                        </div>
+
+                    </div>
+                    {{ form_end(form) }} 
+                    
+
+                      
+            </div>
+        </div>
+<!-- Checkout Page End -->
+
+ 
+{% endblock %}

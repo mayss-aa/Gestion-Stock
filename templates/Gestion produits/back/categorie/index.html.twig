@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="page-header">
+    <h3 class="page-title">Gestion des Catégories</h3>
+    <div class="header-actions">
+        <a class="nav-link btn btn-success create-new-button" href="{{ path('app_categorie_back_new')}}" id="createbuttonDropdown" aria-expanded="false">+ Créer Catégorie</a>
+    </div>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Catégories</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Liste des Catégories</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="row">
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Liste des Catégories</h4>
+                <div class="table-responsive" style="height: 400px; overflow-y: auto; overflow-x: auto;">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Nom Catégorie</th>
+                                <th>Description Catégorie</th>
+                                <th>Saison de Récolte</th>
+                                <th>Température Idéale</th>
+                                <th>Modifier</th>
+                                <th>Supprimer</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for categorie in categories %}
+                                <tr>
+                                    <td>{{ categorie.nomCategorie }}</td>
+                                    <td>{{ categorie.descriptionCategorie }}</td>
+                                    <td>{{ categorie.saisonDeRecolte ?? 'N/A' }}</td>
+                                    <td>{{ categorie.temperatureIdeale ?? 'N/A' }}</td>
+                                     <td>
+                                            <a href="{{ path('app_categorie_back_edit', { 'nom_categorie': categorie.nomCategorie }) }}" class="btn btn-outline-warning">Modifier</a>
+                                    </td>
+                                    <td>
+                                            {# Formulaire de suppression #}
+                                           <form method="post" action="{{ path('app_categorie_back_delete', { 'nom_categorie': categorie.nomCategorie }) }}" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce dépôt ?');">
+                                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ categorie.nomCategorie) }}">
+                                                <button type="submit" class="btn btn-outline-danger">Supprimer</button>
+                                            </form>
+                                        </td>
+
+
+                                    
+                                </tr>
+                            {% endfor %}
+
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<style>
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #191c24;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+    border: 2px solid #191c24;
+}
+
+#conseilAddedModal {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    z-index: 1050;
+}
+
+.scrollbar-color: #888 #191c24;
+</style>
+
+{% endblock %}

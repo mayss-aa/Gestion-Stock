@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+{% block body%}
+        <!-- partial -->
+        <div class="main-panel">
+          <div class="content-wrapper">
+            <div class="page-header">
+              <h3 class="page-title">Créer Nouveau</h3>
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="#">Création</a></li>
+                  <li class="breadcrumb-item active" aria-current="page"></li>
+                </ol>
+              </nav>
+            </div>
+            <div class="row">
+
+              <div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                             {{ form_start(fc,{'attr': {'novalidate': 'novalidate'}}) }}
+        
+        {{ form_row(fc.nom) }} <!-- Name field -->
+        {{ form_row(fc.prenom) }} <!-- First Name field -->
+        {{ form_row(fc.email) }} <!-- Email field -->
+        {{ form_row(fc.numTel) }} <!-- Telephone field -->
+        {{ form_row(fc.genre) }} <!-- Genre selection field -->
+        {{ form_row(fc.date_naissance) }} <!-- Date of Birth field -->
+        {{ form_row(fc.password, { label : 'Mot de Passe' }) }} <!-- Password field -->
+        {{ form_row(fc.role) }} <!-- Role selection field -->
+        {{ form_row(fc.agreeTerms) }} <!-- Terms agreement checkbox -->
+
+        <button type="submit" class="btn btn-primary">S’inscrire</button>
+        
+        {{ form_end(fc) }}
+                  
+                </div>
+              </div>
+              </div>
+              </div>
+           {% for message in app.flashes('successmed') %}
+    <div class="alert alert-success">
+        {{ message }}
+    </div>
+{% endfor %}
+
+{% for message in app.flashes('errormed') %}
+    <div class="alert alert-danger">
+        {{ message }}
+    </div>
+{% endfor %}
+
+
+{% endblock %}

@@ -1,0 +1,200 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="page-header">
+    <h3 class="page-title">Gestion des Utilisateurs</h3>
+    <div class="header-actions">
+        <a class="nav-link btn btn-success create-new-button" href="{{ path('user_add')}}" id="createbuttonDropdown" aria-expanded="false">+ Créer Utilisateur</a>
+    
+</div>
+
+<!-- Search Form -->
+<div class="search-form">
+    {{ form_start(searchForm, {'attr': {'class': 'form-inline my-2 my-lg-0'}}) }}
+    {{ form_row(searchForm.searchQuery, {'attr': {'class': 'form-control mr-sm-2', 'placeholder': 'Search'}}) }}
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    {{ form_end(searchForm) }}
+</div>
+
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="#">Utilisateurs</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Liste des Utilisateurs</li>
+                </ol>
+              </nav>
+            </div>
+            <div class="row">
+              <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Liste des Utilisateurs</h4>
+                    <div class="table-responsive" style="height: 400px; overflow-y: auto; overflow-x: auto;">
+                <table class="table table-hover">
+
+
+
+
+<thead>
+    <tr>
+        <th>Photo de profil</th>
+        <th>ID</th>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Email</th>
+        <th>Téléphone</th>
+        <th>Genre</th>
+        <th>Date de Naissance</th>
+        <th>Mot de Passe</th> <!-- Display the password -->
+        <th>Rôle</th> <!-- Display the role -->
+        <th>Créé le</th> <!-- Date the user was created -->
+        <th>Modifié le</th> <!-- Date the user was last modified -->
+        <th>Modifier</th>
+        <th>Supprimer</th>
+    </tr>
+</thead>
+<tbody>
+    {% for element in c %}
+    <tr>
+    <td>
+    {% if element.photo %}
+        <img src="{{ asset('uploads/' ~ element.photo) }}" alt="User Photo" class="user-photo">
+    {% else %}
+        <span>No Photo</span>
+    {% endif %}
+</td>
+
+        <td class="text-success">{{ element.id }}</td>
+        <td>{{ element.nom }}</td>
+        <td>{{ element.prenom }}</td>
+        <td>{{ element.email }}</td>
+        <td>{{ element.numTel }}</td>
+        <td>{{ element.genre }}</td>
+        <td>{{ element.dateNaissance|date('Y-m-d') }}</td> <!-- Ensure this matches your entity property -->
+        <td>{{ element.password }}</td> <!-- Display the password -->
+        <td>{{ element.role }}</td> <!-- Display the role, assuming role is an object with nom_role property -->
+        <td>{{ element.creeLe|date('Y-m-d H:i') }}</td> <!-- Date the user was created -->
+        <td>{{ element.misAJourLe|date('Y-m-d H:i') }}</td> <!-- Date the user was last modified -->
+        
+<td>
+            <a href="{{ path('user_update', {'id': element.id }) }}" class="btn btn-outline-warning btn-icon-text edit-btn">
+                Modifier <i class="mdi mdi-file-check btn-icon-append"></i>
+            </a>
+        </td>
+      <td>
+    <a href="{{ path('user_delete', {'id': element.id }) }}" 
+       class="btn btn-outline-danger btn-icon-text" 
+       onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">
+        Supprimer <i class="mdi mdi-file-remove btn-icon-append"></i>
+    </a>
+</td>
+
+
+        
+
+        
+
+        
+
+
+
+    </tr>
+    {% endfor %}
+
+       {% for message in app.flashes('successmed') %}
+    <div class="alert alert-success">
+        {{ message }}
+    </div>
+{% endfor %}
+
+{% for message in app.flashes('errormed') %}
+    <div class="alert alert-danger">
+        {{ message }}
+    </div>
+{% endfor %}
+
+</tbody>
+
+</table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            
+<h1>Agriculteurs Statistics</h1>
+<canvas id="userChart" width="400" height="400"></canvas>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var ctx = document.getElementById('userChart').getContext('2d');
+        
+        var userChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Hommes', 'Femmes'],
+                datasets: [{
+                    label: 'User Distribution',
+                    data: [{{ HommesCount }}, {{ FemmesCount }}],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.5)',
+                        'rgba(54, 162, 235, 0.5)',
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        position: 'top', // Adjust legend position
+                    },
+                },
+                layout: {
+                    padding: {
+                        left: 50,
+                        right: 50,
+                        top: 50,
+                        bottom: 50
+                    }
+                },
+                responsive: false
+            }
+        });
+    });
+</script>
+
+
+
+</div>
+
+      <!-- Modal -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<style>
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #191c24;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+    border: 2px solid #191c24;
+}
+
+#conseilAddedModal {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    z-index: 1050;
+}
+
+.scrollbar-color: #888 #191c24;
+</style>
+{% endblock %}

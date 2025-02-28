@@ -1,0 +1,66 @@
+
+
+
+
+
+{% extends 'basefront.html.twig' %}
+
+{% block title %}Ressource Index{% endblock %}
+{% block body %}
+<div class="container mt-5 pt-5"> <!-- Main content padding -->
+    <h1 class="text-center my-5 py-5">Les Ressources</h1><!-- Extra top padding for the title -->
+    <div class="table-responsive">
+        <table class="table table-hover shadow-sm border-0">
+            <thead class="thead-dark">
+                <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Nom de la Ressource</th>
+                                    <th>Type</th>
+                                    <th>Quantité</th>
+                                    <th>Unité de Mesure</th>
+                                    <th>Date d'Ajout</th>
+                                    <th>Date d'Expiration</th>
+                                    <th>Statut</th>
+                                    <th>Dépôt</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for ressource in ressources %}
+                                    <tr>
+                                        <td>{{ ressource.nomRessource }}</td> {# Nom de la ressource #}
+                                        <td>{{ ressource.typeRessource }}</td> {# Type de la ressource #}
+                                        <td>{{ ressource.quantiteRessource }}</td> {# Quantité de la ressource #}
+                                        <td>{{ ressource.uniteMesure }}</td> {# Unité de mesure #}
+                                        <td>{{ ressource.dateAjoutRessource ? ressource.dateAjoutRessource|date('d/m/Y') : '' }}</td> {# Date d'ajout #}
+                                        <td>{{ ressource.dateExpirationRessource ? ressource.dateExpirationRessource|date('d/m/Y') : '' }}</td> {# Date d'expiration #}
+                                        <td>{{ ressource.statutRessource }}</td> {# Statut de la ressource #}
+                                        <td>{{ ressource.depot ? ressource.depot.nomDepot : '' }}</td> {# Nom du dépôt #}
+                                        <td>
+                                            <a href="{{ path('app_ressource_show', {'id': ressource.id}) }}" class="btn btn-primary btn-sm"><i class="bi bi-eye"></i></a>
+                        <a href="{{ path('app_ressource_edit', {'id': ressource.id}) }}" class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i></a>
+                        <form action="{{ path('app_ressource_delete', {'id': ressource.id}) }}" method="post" style="display:inline;">
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Voulez-vous vraiment supprimer ce dépôt ?')">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7" class="text-center">Aucune ressource trouvée</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+                                        </td>
+                                    </tr>
+                        
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="{{ path('app_ressource_new') }}" class="btn btn-success">Créer une nouvelle ressource</a>
+    </div>
+</div>
+{% endblock %}

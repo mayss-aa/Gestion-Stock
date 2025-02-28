@@ -1,0 +1,64 @@
+{% extends 'basefront.html.twig' %}
+{% block body %}
+
+
+      
+
+
+        <!-- Single Page Header start -->
+        <div class="container-fluid page-header-zone py-5">
+            <h1 class="text-center text-white display-6">Gestion de zone</h1>
+
+        </div>
+        <!-- Single Page Header End -->
+
+
+<!-- Checkout Page Start -->
+        <div class="container-fluid py-5">
+            <div class="container py-5">
+                <div class="text-center w-100">
+                    <h1 class="mb-4">{{ is_edit ? 'Modifier une zone' : 'Ajout d\'une zone' }}</h1>
+                </div>
+                {{ form_start(AddZone, {'attr': {'novalidate': 'novalidate'}}) }}
+                <div class="row g-5">
+                    <div class="col-md-12 col-lg-12 col-xl-13">
+                        <!-- Nom de la Zone -->
+                        <div class="form-item">
+                            <label class="form-label my-3" for="zone_nom_zone">Nom de la Zone <sup>*</sup></label>
+                            {{ form_widget(AddZone.nom_zone, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(AddZone.nom_zone) }}
+                        </div>
+        
+                        <!-- Superficie -->
+                        <div class="form-item">
+                            <label class="form-label my-3" for="zone_superficie">Superficie <sup>*</sup></label>
+                            {{ form_widget(AddZone.superficie, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(AddZone.superficie) }}
+                        </div>
+        
+                        <!-- Plante -->
+                        <div class="form-item">
+                            <label class="form-label my-3" for="zone_plante">Plante <sup>*</sup></label>
+                            {{ form_widget(AddZone.plante, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(AddZone.plante) }}
+                        </div>
+                    </div>
+                    <div class="row g-4 pt-4 text-end">
+                        <div class="col">
+                            <button type="submit" class="btn border-secondary py-3 px-4 text-uppercase text-primary w-auto">Valider</button>
+                        </div>
+                    </div>
+                </div>
+                {{ form_end(AddZone) }}
+            </div>
+        </div>
+
+<!-- Checkout Page End -->
+
+
+
+       
+        
+    
+    {% endblock %}
+

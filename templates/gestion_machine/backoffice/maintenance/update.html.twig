@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid py-5">
+        <div class="container py-5">
+            <div class="text-center w-100">
+                <h1 class="mb-4">Modifier une Maintenance</h1>
+            </div>
+
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+            <div class="row g-5">
+                <div class="col-md-12 col-lg-6 col-xl-7">
+                    <!-- Machine Selection -->
+                    <div class="form-item">
+                        <label class="form-label my-3" for="machine">Machine <sup>*</sup></label>
+                        {{ form_widget(form.machine, {'attr': {'class': 'form-select', 'placeholder': 'Sélectionnez la machine'}}) }}
+                        {{ form_errors(form.machine) }}
+                    </div>
+
+                    <!-- Maintenance Date -->
+                    <div class="form-item">
+                        <label class="form-label my-3" for="date_maintenance">Date de maintenance <sup>*</sup></label>
+                        {{ form_widget(form.date_maintenance, {'attr': {'class': 'form-control', 'placeholder': 'Sélectionnez la date de maintenance'}}) }}
+                        {{ form_errors(form.date_maintenance) }}
+                    </div>
+
+                    <!-- Maintenance Cost -->
+                    <div class="form-item">
+                        <label class="form-label my-3" for="cout_maintenance">Coût de maintenance (en DT) <sup>*</sup></label>
+                        {{ form_widget(form.cout_maintenance, {'attr': {'class': 'form-control', 'placeholder': 'Entrez le coût en DT'}}) }}
+                        {{ form_errors(form.cout_maintenance) }}
+                    </div>
+
+                    <!-- Description -->
+                    <div class="form-item">
+                        <label class="form-label my-3" for="description">Description <sup>*</sup></label>
+                        {{ form_widget(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Entrez une description détaillée'}}) }}
+                        {{ form_errors(form.description) }}
+                    </div>
+
+                    <!-- Display form errors above the button -->
+                    <div class="text-danger pt-3">
+                        {{ form_errors(form) }}
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="row g-4 pt-4">
+                        <div class="col-12 text-center">
+                            <button type="submit" class="btn btn-primary py-3 px-4 text-uppercase w-100" id="valider-button" formaction="{{ path('backoffice_maintenance_edit', {'id': maintenance.id}) }}">
+                                Mettre à jour
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+            {% for message in app.flashes('successamen') %}
+    <div class="alert alert-success">
+        {{ message }}
+    </div>
+{% endfor %}
+
+{% for message in app.flashes('erroramen') %}
+    <div class="alert alert-danger">
+        {{ message }}
+    </div>
+{% endfor %}
+{% endblock %}

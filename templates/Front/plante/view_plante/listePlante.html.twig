@@ -1,0 +1,66 @@
+{% extends 'basefront.html.twig' %}
+{% block body %}
+
+      
+
+
+        <!-- Single Page Header start -->
+        <div class="container-fluid page-header-plante py-5">
+            <h1 class="text-center text-white display-6">Gestion des plantes</h1>
+        </div>
+        <!-- Single Page Header End -->
+
+
+        <!-- Cart Page Start -->
+        <div class="container-fluid py-5">
+            <div class="container py-5">
+            <div class="text-center w-100">
+                <h1 class="mb-4">Liste des plantes</h1>
+            </div>
+            <table class="table table-hover ">
+            <thead class="thead-dark">
+                <tr>
+                    <th class="text-center">Nom</th>
+                    <th class="text-center" >Date de Plantation</th>
+                    <th class="text-center">Rendement Estime</th>
+                    <th class="text-center" >Modifier</th>
+                    <th class="text-center" >Supprimer</th>
+                </tr>
+            </thead>
+             <tbody>
+                {% for plante in plantes %}
+                    <tr class="align-middle">
+
+                        <td class="text-center">{{ plante.NomPlante }}</td>
+                        <td class="text-center" >{{ plante.DatePlantation|date('Y-m-d') }}</td>
+                        <td class="text-center">{{ plante.RendementEstime}}</td>
+                        <td class="text-center" >
+                            <a href="{{ path('app_add_plante', {'id': plante.id}) }}" class=" btn btn-sm border-secondary rounded-pill px-3 py-2 text-primary">Modifier</a>
+                        </td>
+                        <td class="text-center" >
+                            <form method="post" action="{{ path('app_plante_supprimer', { 'id': plante.id }) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer cette plante ?');">
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                        
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4" class="text-center">Aucune plante trouvée</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+            </div>
+        </div>
+        <!-- Cart Page End -->
+
+
+       
+
+
+
+    
+{% endblock %}

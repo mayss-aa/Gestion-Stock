@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+        <div class="container-fluid py-5">
+            <div class="container py-5">
+                <div class="text-center w-100">
+                    <h1 class="mb-4">{{ is_edit ? 'Modifier une plante' : 'Ajout d\'une plante' }}</h1>
+                </div>
+                {{ form_start(AddPlante, {'attr': {'novalidate': 'novalidate'}}) }}
+                <div class="row g-5">
+                    <div class="col-md-12 col-lg-12 col-xl-13">
+                        <!-- Nom de la AddPlanteForm -->
+                        <div class="form-item">
+                            <label class="form-label my-3" for="AddPlanteForm_nom_AddPlanteForm">Nom de la plante <sup>*</sup></label>
+                            {{ form_widget(AddPlante.nom_plante, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(AddPlante.nom_plante) }}
+                        </div>
+        
+                        <!-- Superficie -->
+                        <div class="form-item">
+                            <label class="form-label my-3" for="AddPlanteForm_superficie">Date de plantation <sup>*</sup></label>
+                            {{ form_widget(AddPlante.date_plantation, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(AddPlante.date_plantation) }}
+                        </div>
+        
+                        <!-- Plante -->
+                        <div class="form-item">
+                            <label class="form-label my-3" for="AddPlanteForm_plante">Rendement Estime <sup>*</sup></label>
+                            {{ form_widget(AddPlante.rendement_estime, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(AddPlante.rendement_estime) }}
+                        </div>
+                    </div>
+                    <div class="row g-4 pt-4 text-end">
+                        <div class="col">
+                            <button type="submit" class="btn border-secondary py-3 px-4 text-uppercase text-primary w-auto">Valider</button>
+                        </div>
+                    </div>
+                </div>
+                {{ form_end(AddPlante) }}
+            </div>
+        </div>
+
+{% endblock %}

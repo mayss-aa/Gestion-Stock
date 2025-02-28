@@ -1,0 +1,110 @@
+
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="page-header">
+    <h3 class="page-title">Gestion des Plantes</h3>
+    <div class="header-actions">
+        <a class="nav-link btn btn-success create-new-button" href="{{ path('app_add_plante_back')}}" id="createbuttonDropdown" aria-expanded="false">+ Créer Plantes</a>
+    </div>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Plantes</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Liste des Plantes</li>
+        </ol>
+    </nav>
+</div>
+
+    {# Main Content Section #}
+    <div class="row">
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Liste des Plantes</h4>
+                    <div class="table-responsive" style="height: 400px; overflow-y: auto; overflow-x: auto;">
+                        {# Dépôts List Table #}
+                        <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Nom</th>
+                                <th>Date de plantation</th>
+                                <th>Rendement Estime</th>
+                                <th>Modifier</th>
+                                <th>Supprimer</th>
+                            </tr>
+                        </thead>
+                            <tbody>
+                        {% for plante in plantes %}
+                        <tr>
+                          <td class="text-success">{{ plante.id }}</td>
+                          <td>{{ plante.NomPlante }}</td>
+                          <td>{{ plante.DatePlantation|date('Y-m-d')}}</td>
+                          <td>{{ plante.RendementEstime}}</td>
+                          <td>
+                            <a href="{{ path('app_plante_edit_back', { 'id': plante.id }) }}" class="btn btn-outline-warning">Modifier</a> </td>
+                           <td> <form method="post" action="{{ path('app_plante_supprimer_back', { 'id': plante.id }) }}" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette plante ?');">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ plante.id) }}">
+                                      <button type="submit" class="btn btn-outline-danger">Supprimer</button>
+                            </form>
+                          </td>
+                          </tr>
+                          {% else %}
+                                    <tr>
+                                        <td colspan="7" class="text-center text-muted">Aucune plante enregistrée.</td>
+                                    </tr>
+                          {% endfor %}
+                          {% for message in app.flashes('chaima') %}
+                          <div class="alert alert-success">
+                          {{ message }}
+                          </div>
+                          {% endfor %}
+
+                          {% for message in app.flashes('errorchaima') %}
+                              <div class="alert alert-danger">
+                                  {{ message }}
+                              </div>
+                          {% endfor %}
+                        </tbody>
+                        </table>
+                    </div>
+                    {# Action Links #}
+                    <div class="action-links mt-3">
+                        <a href="{{ path('app_liste_plante_back') }}">Retour à la liste</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<style>
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #191c24;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+    border: 2px solid #191c24;
+}
+
+#conseilAddedModal {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    z-index: 1050;
+}
+
+.scrollbar-color: #888 #191c24;
+</style>
+{% endblock %}
+ 

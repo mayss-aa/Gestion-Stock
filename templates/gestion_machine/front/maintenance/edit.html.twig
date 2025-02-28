@@ -1,0 +1,50 @@
+{# templates/maintenance/edit.html.twig #}
+
+{% extends 'basefront.html.twig' %}
+
+{% block title %}Modifier la Maintenance{% endblock %}
+
+{% block body %}
+<h1 class="mb-4">Modifier la Maintenance</h1>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-4">Formulaire de modification</h5>
+
+                    {{ form_start(form) }}
+                        <div class="mb-3">
+                            {{ form_row(form.machine, {'attr': {'class': 'form-control', 'placeholder': 'Sélectionnez la machine'}}) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_row(form.date_maintenance, {'attr': {'class': 'form-control', 'placeholder': 'Date de maintenance'}}) }}
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form_row(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Description de la maintenance'}}) }}
+                        </div>
+
+                        <div class="mb-4">
+                            {{ form_row(form.cout_maintenance, {'attr': {'class': 'form-control', 'placeholder': 'Coût de maintenance'}}) }}
+
+                            {% if form.cout_maintenance.vars.errors|length > 0 %}
+                        <div class="text-danger">
+                             {{ form_errors(form.cout_maintenance) }}
+                        </div>
+                            {% endif %}
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100">Mettre à jour</button>
+                    {{ form_end(form) }}
+
+                    <a href="{{ path('maintenance_list') }}" class="btn btn-secondary mt-3 w-100">Annuler</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

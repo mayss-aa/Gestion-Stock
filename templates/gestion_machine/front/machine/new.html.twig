@@ -1,0 +1,65 @@
+{% extends 'basefront.html.twig' %}
+
+{% block title %}Ajouter Machine{% endblock %}
+
+{% block body %}
+
+   
+
+
+        
+
+
+        <!-- Single Page Header start -->
+        <div class="container-fluid page-header py-5">
+            <h1 class="text-center text-white display-6">Gestion des Machines</h1>
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Machine</a></li>
+                <li class="breadcrumb-item active text-white">Ajouter Machine</li>
+            </ol>
+        </div>
+        <!-- Single Page Header End -->
+
+        <!--  Form Start -->
+
+{# templates/machine/new.html.twig #}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <h1 class="mb-5 text-center">Ajouter une nouvelle machine</h1>
+        <div class="col-md-6">
+             {{ form_start(form,{'attr': {'novalidate': 'novalidate'}}) }}    {# ya raaab w enti rabi maahabch yekhdemli novalidate #}
+
+            <div class="mb-4">
+                {{ form_row(form.nom_machine, {'attr': {'class': 'form-control', 'placeholder': 'Nom de la machine'}}) }}
+            </div>
+
+            <div class="mb-4">
+                {{ form_row(form.etat_machine, {'attr': {'class': 'form-select'}}) }}
+            </div>
+
+            <div class="mb-4">
+                {{ form_row(form.brand_machine, {'attr': {'class': 'form-control', 'placeholder': 'Marque de la machine'}}) }}
+            </div>
+
+            <div class="mb-4">
+                {{ form_label(form.date_achat) }}
+                {{ form_widget(form.date_achat, {'attr': {'class': 'form-control', 'placeholder': 'Date d\'achat'}}) }}
+                {{ form_errors(form.date_achat) }} {# Ajoute l'affichage du message d'erreur #}
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 py-3">Valider</button>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+
+             
+        <!-- Form Page End -->
+
+
+        
+        
+ {% endblock %}

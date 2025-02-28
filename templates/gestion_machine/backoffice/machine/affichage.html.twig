@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {# Page Header Section #}
+    <div class="page-header">
+        <h3 class="page-title">Liste des Machines</h3>
+        <div class="header-actions"></div>
+    </div>
+
+    {# Breadcrumb Navigation #}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Machines</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Liste des Machines</li>
+        </ol>
+    </nav>
+
+    {# Main Content Section #}
+    <div class="row">
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Liste des Machines</h4>
+                    <div class="table-responsive" style="height: 400px; overflow-y: auto; overflow-x: auto;">
+                        {# Machines List Table #}
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Nom de la Machine</th>
+                                    <th>État</th>
+                                    <th>Marque</th>
+                                    <th>Date d'achat</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for machine in machines %}
+                                    <tr>
+                                        <td>{{ machine.nomMachine }}</td>
+                                        <td>{{ machine.etatMachine }}</td>
+                                        <td>{{ machine.brandMachine }}</td>
+                                        <td>{{ machine.dateAchat|date('Y-m-d') }}</td>
+                                        <td>
+                                            <a href="{{ path('backoffice_machine_edit', { 'id': machine.id }) }}" class="btn btn-outline-warning">Modifier</a>
+                                            <form method="post" action="{{ path('backoffice_machine_delete', { 'id': machine.id }) }}" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette machine ?');">
+                                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ machine.id) }}">
+                                                <button type="submit" class="btn btn-outline-danger">Supprimer</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="5" class="text-center text-muted">Aucune machine enregistrée.</td>
+                                    </tr>
+                                {% endfor %}
+                                        {% for message in app.flashes('successamen') %}
+    <div class="alert alert-success">
+        {{ message }}
+    </div>
+{% endfor %}
+
+{% for message in app.flashes('erroramen') %}
+    <div class="alert alert-danger">
+        {{ message }}
+    </div>
+{% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {# Action Links #}
+                    <div class="action-links mt-3">
+                        <a href="{{ path('backoffice_machine_list') }}">Retour à la liste</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

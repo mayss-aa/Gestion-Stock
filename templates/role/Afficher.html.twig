@@ -1,0 +1,119 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="page-header">
+    <h3 class="page-title">Gestion des Roles</h3>
+    <div class="header-actions">
+        <a class="nav-link btn btn-success create-new-button" href="{{ path('role_add')}}" id="createbuttonDropdown" aria-expanded="false">+ Créer Role</a>
+    
+</div>
+
+
+
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="#">Roles</a></li>
+                  <li class="breadcrumb-item active" aria-current="page">Liste des Roles</li>
+                </ol>
+              </nav>
+            </div>
+            <div class="row">
+              <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                  <div class="card-body">
+                    <h4 class="card-title">Liste des Roles</h4>
+                    <div class="table-responsive" style="height: 400px; overflow-y: auto; overflow-x: auto;">
+                <table class="table table-hover">
+
+
+
+
+<thead>
+    <tr>
+        <th>ID</th>
+        <th>Role</th>
+        <th>Description</th>
+        <th>Modifier</th>
+        <th>Supprimer</th>
+    </tr>
+</thead>
+<tbody>
+    {% for element in roles %}
+    <tr>
+        <td class="text-success">{{ element.id }}</td>
+        <td>{{ element.nomRole }}</td>
+        <td>{{ element.description }}</td>
+
+<td>
+            <a href="{{ path('role_update', {'id': element.id }) }}" class="btn btn-outline-warning btn-icon-text edit-btn">
+                Modifier <i class="mdi mdi-file-check btn-icon-append"></i>
+            </a>
+        </td>
+        <td>
+    <a href="{{ path('role_delete', {'id': element.id }) }}" 
+       class="btn btn-outline-danger btn-icon-text" 
+       onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce rôle ?');">
+        Supprimer <i class="mdi mdi-file-remove btn-icon-append"></i>
+    </a>
+</td>
+
+
+    </tr>
+    {% endfor %}
+      {% for message in app.flashes('successrole') %}
+    <div class="alert alert-success">
+        {{ message }}
+    </div>
+{% endfor %}
+
+{% for message in app.flashes('errorrole') %}
+    <div class="alert alert-danger">
+        {{ message }}
+    </div>
+{% endfor %}
+</tbody>
+
+</table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+
+
+</div>
+
+      <!-- Modal -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<style>
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #191c24;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 10px;
+    border: 2px solid #191c24;
+}
+
+#conseilAddedModal {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    z-index: 1050;
+}
+
+.scrollbar-color: #888 #191c24;
+</style>
+{% endblock %}

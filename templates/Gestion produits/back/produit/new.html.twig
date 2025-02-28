@@ -1,0 +1,129 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <!-- Product Creation Form -->
+    <div class="container-fluid py-5">
+        <div class="container py-5">
+            <div class="text-center w-100">
+                <h1 class="mb-4">Ajouter un produit</h1>
+            </div>
+
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+            <div class="row g-5">
+                <!-- Product Information Section -->
+                <div class="col-md-12 col-lg-6 col-xl-7">
+                    <!-- Product Name -->
+                    <div class="form-item">
+                        <label class="form-label my-3" for="nom_produit">Nom du produit <sup>*</sup></label>
+                        {{ form_widget(form.nom_produit, {'attr': {'class': 'form-control', 'placeholder': 'Entrez le nom du produit'}}) }}
+                        <div class="text-danger">
+                            {{ form_errors(form.nom_produit) }}
+                        </div>
+                    </div>
+
+                    <!-- Cultivation Details Section -->
+                    <div class="row g-4 pt-4">
+                        <div class="col-md-6">
+                            <!-- Culture Cycle -->
+                            <div class="form-item">
+                                <label class="form-label my-3" for="cycle_culture">Cycle de culture <sup>*</sup></label>
+                                {{ form_widget(form.cycle_culture, {'attr': {'class': 'form-control', 'placeholder': 'Entrez le cycle de culture'}}) }}
+                                <div class="text-danger">
+                                    {{ form_errors(form.cycle_culture) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <!-- Quantity -->
+                            <div class="form-item">
+                                <label class="form-label my-3" for="quantite_produit">Quantité <sup>*</sup></label>
+                                {{ form_widget(form.quantite_produit, {'attr': {'class': 'form-control', 'placeholder': 'Entrez la quantité'}}) }}
+                                <div class="text-danger">
+                                    {{ form_errors(form.quantite_produit) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <!-- Unit of Quantity -->
+                            <div class="form-item">
+                                <label class="form-label my-3" for="unite_quant_prod">Unité de quantité <sup>*</sup></label>
+                                {{ form_widget(form.unite_quant_prod, {'attr': {'class': 'form-control', 'placeholder': 'Sélectionnez l\'unité'}}) }}
+                                <div class="text-danger">
+                                    {{ form_errors(form.unite_quant_prod) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <!-- Sowing Date -->
+                            <div class="form-item">
+                                <label class="form-label my-3" for="date_semis_prod">Date de semis <sup>*</sup></label>
+                                {{ form_widget(form.date_semis_prod, {'attr': {'class': 'form-control'}}) }}
+                                <div class="text-danger">
+                                    {{ form_errors(form.date_semis_prod) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <!-- Harvest Date -->
+                            <div class="form-item">
+                                <label class="form-label my-3" for="date_recolte_prod">Date de récolte <sup>*</sup></label>
+                                {{ form_widget(form.date_recolte_prod, {'attr': {'class': 'form-control'}}) }}
+                                <div class="text-danger">
+                                    {{ form_errors(form.date_recolte_prod) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <!-- Creation Date -->
+                            <div class="form-item">
+                                <label class="form-label my-3" for="cree_le_prod">Date de création <sup>*</sup></label>
+                                {{ form_widget(form.cree_le_prod, {'attr': {'class': 'form-control'}}) }}
+                                <div class="text-danger">
+                                    {{ form_errors(form.cree_le_prod) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <!-- Update Date -->
+                            <div class="form-item">
+                                <label class="form-label my-3" for="mis_a_jour_le_prod">Dernière mise à jour <sup>*</sup></label>
+                                {{ form_widget(form.mis_a_jour_le_prod, {'attr': {'class': 'form-control'}}) }}
+                                <div class="text-danger">
+                                    {{ form_errors(form.mis_a_jour_le_prod) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <!-- Category -->
+                            <div class="form-item">
+                                <label class="form-label my-3" for="categorie">Catégorie <sup>*</sup></label>
+                                {{ form_widget(form.categorie, {'attr': {'class': 'form-control'}}) }}
+                                <div class="text-danger">
+                                    {{ form_errors(form.categorie) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="row g-4 pt-4">
+                        <div class="col-12 text-center">
+                            <button type="submit" class="btn btn-primary py-3 px-4 text-uppercase w-100" id="valider-button" formaction="{{ path('app_produit_back_new') }}">
+                                Valider
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}

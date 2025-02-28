@@ -1,0 +1,68 @@
+{% extends 'basefront.html.twig' %}
+
+{% block title %}Liste des Maintenances{% endblock %}
+
+{% block body %}
+ 
+        <!-- Single Page Header start -->
+        <div class="container-fluid page-header-maintenance py-5">
+            <h1 class="text-center text-white display-6">Gestion des Maintenance</h1>
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Maintenance</a></li>
+                <li class="breadcrumb-item active text-white">Afficher Maintenance</li>
+            </ol>
+        </div>
+<!-- Maintenance List Start -->
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <div class="text-center w-100">
+            <h1 class="mb-4 mt-5">Liste des Maintenances</h1>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <table class="table table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th class="text-center">ID</th>
+                            <th class="text-center">Machine</th>
+                            <th class="text-center">État de la Machine</th>
+                            <th class="text-center">Date de Maintenance</th>
+                            <th class="text-center">Coût de Maintenance</th>
+                            <th class="text-center">Description</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for maintenance in maintenances %}
+                            <tr class="align-middle">
+                                <td class="text-center">{{ maintenance.id }}</td>
+                                <td class="text-center">{{ maintenance.machine.nomMachine }}</td>
+                                <td class="text-center">{{ maintenance.machine.etatMachine ? maintenance.machine.etatMachine : 'Non spécifié' }}</td>
+                                <td class="text-center">{{ maintenance.dateMaintenance ? maintenance.dateMaintenance|date('d/m/Y') : 'Non spécifiée' }}</td>
+                                <td class="text-center">{{ maintenance.coutMaintenance ? maintenance.coutMaintenance|number_format(2, ',', ' ') : 'Non spécifié' }} DT</td>
+                                <td class="text-center">{{ maintenance.description }}</td>
+                                <td class="text-center">
+                                    <a href="{{ path('maintenance_edit', {id: maintenance.id}) }}" class="btn btn-primary btn-sm">Modifier</a>
+                                    <form action="{{ path('maintenance_delete', {id: maintenance.id}) }}" method="post" class="d-inline">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ maintenance.id) }}">
+                                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Voulez-vous vraiment supprimer cette maintenance ?');">Supprimer</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="7" class="text-center text-muted">Aucune maintenance enregistrée.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Maintenance List End -->
+
+
+{% endblock %}

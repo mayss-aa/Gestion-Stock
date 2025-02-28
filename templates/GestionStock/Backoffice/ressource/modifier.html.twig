@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {# Page Header Section #}
+    <div class="page-header">
+        <h3 class="page-title">Mettre à Jour la Ressource</h3>
+        <div class="header-actions"></div>
+    </div>
+
+    {# Breadcrumb Navigation #}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Mise à jour</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Ressource</li>
+        </ol>
+    </nav>
+
+    {# Main Form Section #}
+    <div class="row">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Modifier la Ressource</h4>
+                    <div class="table-responsive" style="height: 400px; overflow-y: auto; overflow-x: auto;">
+                        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+
+                        {# Nom de la Ressource #}
+                        <div class="form-group row g-4 text-center align-items-center justify-content-center pt-4">
+                            <label class="form-label my-3" for="nom_ressource">Nom de la Ressource <sup>*</sup></label>
+                            {{ form_widget(form.nom_ressource, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.nom_ressource) }}
+                        </div>
+
+                        {# Type de Ressource #}
+                        <div class="form-group row g-4 text-center align-items-center justify-content-center pt-4">
+                            <label class="form-label my-3" for="type_ressource">Type de Ressource <sup>*</sup></label>
+                            {{ form_widget(form.type_ressource, {'attr': {'class': 'form-select'}}) }}
+                            {{ form_errors(form.type_ressource) }}
+                        </div>
+
+                        {# Quantité de la Ressource #}
+                        <div class="form-group row g-4 text-center align-items-center justify-content-center pt-4">
+                            <label class="form-label my-3" for="quantite_ressource">Quantité <sup>*</sup></label>
+                            {{ form_widget(form.quantite_ressource, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.quantite_ressource) }}
+                        </div>
+
+                        {# Unité de Mesure #}
+                        <div class="form-group row g-4 text-center align-items-center justify-content-center pt-4">
+                            <label class="form-label my-3" for="unite_mesure">Unité de Mesure <sup>*</sup></label>
+                            {{ form_widget(form.unite_mesure, {'attr': {'class': 'form-select'}}) }}
+                            {{ form_errors(form.unite_mesure) }}
+                        </div>
+
+                        {# Date d'Ajout #}
+                        <div class="form-group row g-4 text-center align-items-center justify-content-center pt-4">
+                            <label class="form-label my-3" for="date_ajout_ressource">Date d'Ajout <sup>*</sup></label>
+                            {{ form_widget(form.date_ajout_ressource, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.date_ajout_ressource) }}
+                        </div>
+
+                        {# Date d'Expiration #}
+                        <div class="form-group row g-4 text-center align-items-center justify-content-center pt-4">
+                            <label class="form-label my-3" for="date_expiration_ressource">Date d'Expiration <sup>*</sup></label>
+                            {{ form_widget(form.date_expiration_ressource, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.date_expiration_ressource) }}
+                        </div>
+
+                        {# Statut de la Ressource #}
+                        <div class="form-group row g-4 text-center align-items-center justify-content-center pt-4">
+                            <label class="form-label my-3" for="statut_ressource">Statut <sup>*</sup></label>
+                            {{ form_widget(form.statut_ressource, {'attr': {'class': 'form-select'}}) }}
+                            {{ form_errors(form.statut_ressource) }}
+                        </div>
+
+                        {# Dépôt #}
+                        <div class="form-group row g-4 text-center align-items-center justify-content-center pt-4">
+                            <label class="form-label my-3" for="depot">Dépôt <sup>*</sup></label>
+                            {{ form_widget(form.depot, {'attr': {'class': 'form-select'}}) }}
+                            {{ form_errors(form.depot) }}
+                        </div>
+
+                        {# Submit Button #}
+                        <div class="form-group row g-4 text-center align-items-center justify-content-center pt-4">
+                            <button type="submit" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary" id="valider-button">
+                                Mettre à jour
+                            </button>
+                        </div>
+
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,86 @@
+
+
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {# Page Header Section #}
+    <div class="page-header">
+        <h3 class="page-title">Liste des Dépôts</h3>
+        <div class="header-actions"></div>
+    </div>
+
+    {# Breadcrumb Navigation #}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Dépôts</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Liste des Dépôts</li>
+        </ol>
+    </nav>
+
+    {# Main Content Section #}
+    <div class="row">
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Liste des Dépôts</h4>
+                    <div class="table-responsive" style="height: 400px; overflow-y: auto; overflow-x: auto;">
+                        {# Dépôts List Table #}
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Nom du Dépôt</th>
+                                    <th>Localisation</th>
+                                    <th>Capacité</th>
+                                    <th>Unité de Capacité</th>
+                                    <th>Type de Stockage</th>
+                                    <th>Statut</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for depot in depots %}
+                                    <tr>
+                                        <td>{{ depot.nomDepot }}</td> {# Nom du dépôt #}
+                                        <td>{{ depot.localisationDepot }}</td> {# Localisation du dépôt #}
+                                        <td>{{ depot.capaciteDepot }}</td> {# Capacité du dépôt #}
+                                        <td>{{ depot.uniteCapDepot }}</td> {# Unité de capacité #}
+                                        <td>{{ depot.typeStockageDepot }}</td> {# Type de stockage #}
+                                        <td>{{ depot.statutDepot }}</td> {# Statut du dépôt #}
+                                        <td>
+                                            <a href="{{ path('backoffice_depot_edit', { 'id': depot.id }) }}" class="btn btn-outline-warning">Modifier</a>
+
+                                            {# Formulaire de suppression #}
+                                            <form method="post" action="{{ path('backoffice_depot_delete', { 'id': depot.id }) }}" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce dépôt ?');">
+                                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ depot.id) }}">
+                                                <button type="submit" class="btn btn-outline-danger">Supprimer</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% else %}
+                                    <tr>
+                                        <td colspan="7" class="text-center text-muted">Aucun dépôt enregistré.</td>
+                                    </tr>
+                                {% endfor %}
+                                {% for message in app.flashes('successmay') %}
+    <div class="alert alert-success">
+        {{ message }}
+    </div>
+{% endfor %}
+
+{% for message in app.flashes('errormay') %}
+    <div class="alert alert-danger">
+        {{ message }}
+    </div>
+{% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {# Action Links #}
+                    <div class="action-links mt-3">
+                        <a href="{{ path('backoffice_depot_index') }}">Retour à la liste</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

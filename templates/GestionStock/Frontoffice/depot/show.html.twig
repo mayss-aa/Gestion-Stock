@@ -1,0 +1,53 @@
+{% extends 'basefront.html.twig' %}
+
+{% block title %}Détails du Dépôt{% endblock %}
+{% block body %}
+<div class="container col-5 mt-5 pt-5"> <!-- Added pt-5 to push content below navbar -->
+    <div class="card shadow-lg border-0 text-center">
+        <div class="card-body">
+            <h3 class="card-title text-center">{{ depot.nomDepot }}</h3>
+            <h6 class="card-subtitle text-muted text-center">{{ depot.localisationDepot }}</h6>
+            <hr>
+            <p class="card-text">
+                <strong>Capacité:</strong> {{ depot.capaciteDepot }} {{ depot.uniteCapDepot }}<br>
+                <strong>Type de stockage:</strong> {{ depot.typeStockageDepot }}<br>
+                <strong>Statut:</strong> {{ depot.statutDepot }}<br>
+                <strong>Utilisation actuelle:</strong> {{ depot.getUtilisationActuelle() }} <br> <!-- Affichage de l'utilisation actuelle -->
+                <strong>Taux d'augmentation:</strong> {{ depot.getTauxAugmentation() }} m³/jour <!-- Affichage du taux d'augmentation -->
+            </p>
+            <div class="mt-3">
+                <a href="{{ path('app_depot_edit', {'id': depot.id}) }}" class="btn btn-warning">Modifier</a>
+            </div>
+            <div class="mt-3">
+                <form action="{{ path('app_depot_delete', {'id': depot.id}) }}" method="post" style="display:inline;">
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce dépôt ?')">
+                        Supprimer
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr>
+<h1 class="text-center mt-5 pt-5">Liste des Ressources dans le Dépôt</h1> <!-- More spacing here -->
+<hr>
+
+<div class="row mt-5">
+    {% for ressource in depot.Ressources %}
+        <div class="col-md-3 mb-4 m-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <h5 class="card-title">{{ ressource.nomRessource }}</h5>
+                    <h6 class="card-subtitle text-muted">{{ ressource.typeRessource }}</h6>
+                    <p class="card-text mt-2">
+                        <strong>Quantité:</strong> {{ ressource.quantiteRessource }} {{ ressource.uniteMesure }}<br>
+                        <strong>Ajouté le:</strong> {{ ressource.dateAjoutRessource|date('Y-m-d') }}<br>
+                        <strong>Expiration:</strong> {{ ressource.dateExpirationRessource|date('Y-m-d') }}
+                    </p>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

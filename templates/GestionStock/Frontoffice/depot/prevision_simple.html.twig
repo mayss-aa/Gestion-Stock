@@ -1,0 +1,25 @@
+{% extends 'basefront.html.twig' %}
+
+{% block title %}Prévision de remplissage{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h2 class="text-center mb-4">📦 Prévision du remplissage du dépôt</h2>
+    <hr>
+
+    {% if capacite_depot is defined and utilisation_actuelle is defined and taux_augmentation is defined %}
+        {% if capacite_depot == utilisation_actuelle %}
+            <p class="text-center">🏆 Le dépôt est <strong>plein</strong> et n'a pas besoin de remplissage.</p>
+        {% elseif taux_augmentation == 0 and utilisation_actuelle == 0 %}
+            <p class="text-center">⚠️ Le dépôt est actuellement <strong>vide</strong>.</p>
+        {% elseif prevision is defined and prevision is not null and prevision is not same as(false) %}
+            {% set jours = (prevision + 0)|round(0, 'floor') %}
+            <p class="text-center">✅ Le dépôt sera rempli en <strong>{{ jours }} jour(s)</strong>.</p>
+        {% else %}
+            <p class="text-center">❌ Erreur : Valeur invalide retournée.</p>
+        {% endif %}
+    {% else %}
+        <p class="text-center">⚠️ Données insuffisantes pour déterminer l'état du dépôt.</p>
+    {% endif %}
+</div>
+{% endblock %}

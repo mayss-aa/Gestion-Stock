@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid py-5">
+        <div class="container py-5">
+            <div class="text-center w-100">
+                <h1 class="mb-4">Modifier un produit</h1>
+            </div>
+
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+            <div class="row g-5">
+                <div class="col-md-12 col-lg-6 col-xl-7">
+                    <div class="form-item">
+                        <label class="form-label my-3" for="nom_produit">Nom du produit <sup>*</sup></label>
+                        {{ form_widget(form.nom_produit, {'attr': {'class': 'form-control', 'placeholder': 'Entrez le nom du produit'}}) }}
+                        {{ form_errors(form.nom_produit) }}
+                    </div>
+                    <div class="row g-4 pt-4">
+                        <div class="col-md-6">
+                            <div class="form-item">
+                                <label class="form-label my-3" for="cycle_culture">Cycle de culture <sup>*</sup></label>
+                                {{ form_widget(form.cycle_culture, {'attr': {'class': 'form-control', 'placeholder': 'Entrez le cycle de culture'}}) }}
+                                {{ form_errors(form.cycle_culture) }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-item">
+                                <label class="form-label my-3" for="quantite_produit">Quantité <sup>*</sup></label>
+                                {{ form_widget(form.quantite_produit, {'attr': {'class': 'form-control', 'placeholder': 'Entrez la quantité'}}) }}
+                                {{ form_errors(form.quantite_produit) }}
+                            </div>
+                        </div>
+                         <div class="col-md-6">
+                            <div class="form-item">
+                                <label class="form-label my-3" for="unite_quant_prod">unite Quantité produit  <sup>*</sup></label>
+                                {{ form_widget(form.unite_quant_prod, {'attr': {'class': 'form-control', 'placeholder': 'Entrez unite'}}) }}
+                                {{ form_errors(form.unite_quant_prod) }}
+                            </div>
+                        </div>
+                         <div class="col-md-6">
+                            <div class="form-item">
+                                <label class="form-label my-3" for="date_semis_prod">date_semis_produit  <sup>*</sup></label>
+                                {{ form_widget(form.date_semis_prod, {'attr': {'class': 'form-control', 'placeholder': 'Entrez la date semis produit'}}) }}
+                                {{ form_errors(form.date_semis_prod) }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-item">
+                                <label class="form-label my-3" for="date_recolte_prod">date_recolte_produit  <sup>*</sup></label>
+                                {{ form_widget(form.date_recolte_prod, {'attr': {'class': 'form-control', 'placeholder': 'Entrez la date recolte produit'}}) }}
+                                {{ form_errors(form.date_recolte_prod) }}
+                            </div>
+                        </div>
+                         <div class="col-md-6">
+                            <div class="form-item">
+                                <label class="form-label my-3" for="cree_le_prod">cree_le_produit  <sup>*</sup></label>
+                                {{ form_widget(form.cree_le_prod, {'attr': {'class': 'form-control', 'placeholder': 'Entrez la date de creation'}}) }}
+                                {{ form_errors(form.cree_le_prod) }}
+                            </div>
+                        </div>
+                         <div class="col-md-6">
+                            <div class="form-item">
+                                <label class="form-label my-3" for="mis_a_jour_le_prod">mis_a_jour_le_produit <sup>*</sup></label>
+                                {{ form_widget(form.mis_a_jour_le_prod, {'attr': {'class': 'form-control', 'placeholder': 'Entrez la date de mis a jour '}}) }}
+                                {{ form_errors(form.mis_a_jour_le_prod) }}
+                            </div>
+                        </div>
+                         <div class="col-md-6">
+                            <!-- Category -->
+                            <div class="form-item">
+                                <label class="form-label my-3" for="categorie">Catégorie <sup>*</sup></label>
+                                {{ form_widget(form.categorie, {'attr': {'class': 'form-control'}}) }}
+                                {{ form_errors(form.categorie) }}
+                            </div>
+                        </div>
+                        
+                        <!-- Add other fields similarly -->
+                    </div>
+                    <div class="row g-4 pt-4">
+                        <div class="col-12 text-center">
+                            <button type="submit" class="btn btn-primary py-3 px-4 text-uppercase w-100" id="valider-button" formaction="{{ path('app_produit_back_edit', {'id': produit.id}) }}">
+                                Update
+                            </button>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% block title %}Connectez-vous !{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('Dash_Admin/assets/css/login.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="container" id="container">
+        <div class="form-container sign-in">
+            <form method="POST" action="{{ path('app_login') }}">
+                <h1 class="h3 mb-3 font-weight-normal">Veuillez vous connecter</h1>
+
+                <label for="inputEmail">Email</label>
+                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control">
+
+                <label for="inputPassword">Mot de passe</label>
+                <input type="password" name="password" id="inputPassword" class="form-control">
+
+                <div class="h-captcha" data-sitekey="{{ hCaptchaSiteKey }}"></div>
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <button class="btn btn-lg btn-primary" type="submit">
+                    Se connecter
+                </button>
+
+                <a href="{{ path('app_front') }}">Mot de passe oublié ?</a>
+            </form>
+        </div>
+
+        <div class="toggle-container">
+            <div class="toggle">
+                <div class="toggle-panel toggle-right">
+                    <h1>Bonjour, ami !</h1>
+                    <p>Inscrivez-vous avec vos informations personnelles pour utiliser toutes les fonctionnalités du site</p>
+                    <a href="{{ path('app_register') }}"><button class="hidden" id="register">S'inscrire</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ asset('Dash_Admin/assets/js/script.js') }}"></script>
+    <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+{% endblock %}

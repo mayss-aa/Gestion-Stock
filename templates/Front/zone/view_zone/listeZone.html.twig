@@ -1,0 +1,64 @@
+{% extends 'basefront.html.twig' %}
+{% block body %}
+
+       
+
+
+        <!-- Single Page Header start -->
+        <div class="container-fluid page-header-zone py-5">
+            <h1 class="text-center text-white display-6">Gestion des zones</h1>
+        </div>
+        <!-- Single Page Header End -->
+
+
+        <!-- Cart Page Start -->
+        <div class="container-fluid py-5">
+            <div class="container py-5">
+            <div class="text-center w-100">
+                <h1 class="mb-4">Liste des zones</h1>
+            </div>
+            <table class="table table-hover ">
+            <thead class="thead-dark">
+                <tr>
+                    <th class="text-center">Nom</th>
+                    <th class="text-center">Superficie</th>
+                    <th class="text-center">Plante</th>
+                    <th class="text-center" >Modifier</th>
+                    <th class="text-center" >Supprimer</th>
+                </tr>
+            </thead>
+             <tbody>
+                {% for zone in zones %}
+                    <tr class="align-middle">
+                        <td class="text-center">{{ zone.nomZone }}</td>
+                        <td class="text-center">{{ zone.superficie }}</td>
+                        <td class="text-center">{{ zone.plante.nomPlante }}</td>
+                        <td class="text-center" >
+                            <a href="{{ path('app_add_zone', {'id': zone.id}) }}" class="btn btn-sm border-secondary rounded-pill px-3 py-2 text-primary">Modifier</a>
+                        </td>
+                        <td class="text-center" >
+                            <form method="post" action="{{ path('app_zone_supprimer', { 'id': zone.id }) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer cette zone ?');">
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4" class="text-center">Aucune zone trouvée</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+            </div>
+        </div>
+        <!-- Cart Page End -->
+
+
+       
+
+
+
+    
+{% endblock %}

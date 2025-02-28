@@ -1,0 +1,43 @@
+{% block title %}Inscription{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('Dash_Admin/assets/css/login.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="container" id="container">
+        <div class="form-container sign-up">
+            {{ form_start(signupForm, {'attr': {'novalidate': 'novalidate'}}) }}
+                {{ form_row(signupForm.nom) }}
+                {{ form_row(signupForm.prenom) }}
+                {{ form_row(signupForm.email) }}
+                {{ form_row(signupForm.numTel) }}
+                {{ form_row(signupForm.genre) }}
+                {{ form_row(signupForm.date_naissance) }}
+                {{ form_row(signupForm.password, { 'label': 'Mot de Passe' }) }}
+                {{ form_row(signupForm.agreeTerms) }}
+
+                <button type="submit">S’inscrire</button>
+            {{ form_end(signupForm) }}
+        </div>
+        
+        <div class="toggle-container">
+            <div class="toggle">
+                <div class="toggle-panel toggle-left">
+                    <h1>Content de vous revoir&nbsp;!</h1>
+                    <p>Entrez vos informations personnelles pour profiter de toutes les fonctionnalités du site.</p>
+                    <a href="{{ path('app_login') }}">
+                        <button class="hidden" id="login">Se connecter</button>
+                    </a>
+                </div>
+                <div class="toggle-panel toggle-right">
+                    <h1>Bonjour, ami(e)!</h1>
+                    <p>Inscrivez-vous avec vos informations personnelles pour profiter de toutes les fonctionnalités du site.</p>
+                    <button class="hidden" id="register">S'inscrire</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ asset('Dash_Admin/assets/js/script.js') }}"></script>
+{% endblock %}
