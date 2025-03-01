@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <div class="container">
+    <h2>Liste des Dépôts</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nom</th>
+          <th>Localisation</th>
+          <th>Capacité</th>
+          <th>Unité</th>
+          <th>Type de stockage</th>
+          <th>Statut</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for depot in depots %}
+          <tr>
+            <td>{{ depot.id }}</td>
+            <td>{{ depot.nomDepot }}</td>  <!-- Accès via getter getNomDepot() -->
+            <td>{{ depot.localisationDepot }}</td>  <!-- Accès via getter getLocalisationDepot() -->
+            <td>{{ depot.capaciteDepot }}</td> <!-- Accès via getter getCapaciteDepot() -->
+            <td>{{ depot.uniteCapDepot }}</td> <!-- Accès via getter getUniteCapDepot() -->
+            <td>{{ depot.typeStockageDepot }}</td> <!-- Accès via getter getTypeStockageDepot() -->
+            <td>{{ depot.statutDepot }}</td> <!-- Accès via getter getStatutDepot() -->
+            <td>
+              <a href="{{ path('backoffice_depot_edit', {'id': depot.id}) }}" class="btn btn-warning">Modifier</a>
+              <a href="{{ path('backoffice_depot_show', {'id': depot.id}) }}" class="btn btn-info">Voir</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

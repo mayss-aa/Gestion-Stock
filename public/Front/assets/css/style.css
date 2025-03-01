@@ -241,8 +241,8 @@ header {
 }
 /* Modifier l'espace autour de la section .page-header */
 .py-5 {
-    padding-top: 8rem !important;  /* Ajuste l'espacement en haut */
-    padding-bottom: 8rem !important;  /* Ajuste l'espacement en bas */
+    padding-top: 7rem !important;  /* Ajuste l'espacement en haut */
+    padding-bottom: 6rem !important;  /* Ajuste l'espacement en bas */
 }
 
 /* Modifications pour l'image de fond dans .page-header */

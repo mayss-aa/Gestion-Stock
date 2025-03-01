@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+  <div class="container">
+    <h2>Liste des Ressources</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nom</th>
+          <th>Type</th>
+          <th>Quantité</th>
+          <th>Unité</th>
+          <th>Date d'ajout</th>
+          <th>Date d'expiration</th>
+          <th>Statut</th>
+          <th>Dépôt</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for ressource in ressources %}
+          <tr>
+        
+            <td>{{ ressource.id }}</td>
+            <td>{{ ressource.getNomRessource() }}</td>
+            <td>{{ ressource.getTypeRessource() }}</td>
+            <td>{{ ressource.getQuantiteRessource() }}</td>
+            <td>{{ ressource.getUniteMesure() }}</td>
+            <td>{{ ressource.getDateAjoutRessource() ? ressource.getDateAjoutRessource()|date('d/m/Y') : '' }}</td>
+            <td>{{ ressource.getDateExpirationRessource() ? ressource.getDateExpirationRessource()|date('d/m/Y') : '' }}</td>
+            <td>{{ ressource.getStatutRessource() }}</td>
+            <td>{{ ressource.getDepot() ? ressource.getDepot().getNomDepot() : '' }}</td>
+             <td>
+              <a href="{{ path('backoffice_ressource_edit', {'id': ressource.id}) }}" class="btn btn-warning">Modifier</a>
+   
+              <a href="{{ path('backoffice_ressource_delete', {'id': ressource.id}) }}" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette ressource ?')">Supprimer</a>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

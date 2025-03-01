@@ -44,7 +44,7 @@ class Depot
     #[Assert\NotBlank(message: "Champ ne peut pas être vide")]
 
     private ?string $statut_depot = null;
-
+ //jointure 
     /**
      * @var Collection<int, Ressource>
      */

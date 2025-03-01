@@ -50,7 +50,7 @@ class Ressource
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank(message: "Champ ne peut pas être vide")]
-
+//jointure 
     private ?string $statut_ressource = null;
 
     #[ORM\ManyToOne(inversedBy: 'ressource')]
