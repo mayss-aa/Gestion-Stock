@@ -1,91 +1,95 @@
 import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LinearRegression
-from sklearn.metrics import mean_squared_error
-from sklearn.preprocessing import StandardScaler
-import joblib
+import numpy as np
 import os
-import sklearn
-print(f"✅ Version de scikit-learn utilisée pour l'entraînement : {sklearn.__version__}")
+import joblib
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.preprocessing import StandardScaler
 
-# 📌 Définir le chemin absolu du fichier Excel
+# ✅ 1. Charger les données
 base_dir = os.path.dirname(os.path.abspath(__file__))
 file_path = os.path.join(base_dir, "depot_data_final.xlsx")
-
-# 📌 Vérifier si le fichier Excel existe
-if not os.path.exists(file_path):
-    raise FileNotFoundError(f"❌ Le fichier {file_path} n'existe pas. Vérifie son emplacement.")
-
-# 📌 Charger la dataset
 data = pd.read_excel(file_path)
 
-# 🔍 Vérification des colonnes
-print("🔍 Colonnes du dataset :", data.columns.tolist())
+# ✅ 2. Suppression des valeurs manquantes
+data = data.dropna()
 
-# 📌 Nettoyage et Préparation des Données
-data = data.dropna()  # 🔹 Supprimer les valeurs manquantes
+# ✅ 3. Remplacement des valeurs 0 dans `taux_augmentation` par le 60e percentile
+adjusted_taux = data.loc[data['taux_augmentation'] > 0, 'taux_augmentation'].quantile(0.60)
+data['taux_augmentation'] = data['taux_augmentation'].replace(0, adjusted_taux)
 
-# 📌 Gestion des cas où `taux_augmentation = 0`
-data['taux_augmentation'] = data['taux_augmentation'].replace(0, 0.0001)  # ✅ Évite la division par zéro sans perturber le ML
+# ✅ 4. Ajout d’une nouvelle variable `capacite_utilisee_ratio`
+data['capacite_utilisee_ratio'] = data['utilisation_actuelle'] / data['capacite_depot']
 
-# 📌 Définition des Variables (Cas Normal)
-X = data[['utilisation_actuelle', "taux_augmentation", "capacite_depot"]]
-y = (data["capacite_depot"] - data["utilisation_actuelle"]) / data["taux_augmentation"]  # 🔹 Calcul des jours restants
+# ✅ 5. Vérification de la distribution après correction
+plt.figure(figsize=(12, 4))
+sns.histplot(data['taux_augmentation'], bins=30, kde=True, color="blue")
+plt.title("Distribution du taux d'augmentation après correction avec le 60e percentile")
+plt.xlabel("Taux d'augmentation")
+plt.ylabel("Fréquence")
+plt.show()
 
-# ✅ Correction : Éviter les valeurs infinies dans `y`
-y.replace([float('inf'), float('-inf')], y[y != float('inf')].max(), inplace=True)
+# ✅ 6. Définition des variables
+X = data[['utilisation_actuelle', 'taux_augmentation', 'capacite_depot', 'capacite_utilisee_ratio']].values
+y = (data['capacite_depot'] - data['utilisation_actuelle']) / data['taux_augmentation']
 
-# ✅ Correction : Limiter les valeurs aberrantes (max 10 ans de prévision)
-y = y.clip(upper=365 * 10)  # Maximum 10 ans
+# ✅ 7. Suppression des valeurs infinies et remplacement des NaN par la médiane
+y = np.where(np.isinf(y), np.nan, y)
+y = np.nan_to_num(y, nan=np.nanmedian(y))
 
-# 📌 Normalisation des caractéristiques
+# ✅ 8. Transformation `sqrt(y + 1)` pour éviter les problèmes de zéro et négatifs
+y = np.sqrt(y + 1)
+
+# ✅ 9. Normalisation des caractéristiques
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 
-# ✅ Sauvegarde du Scaler pour utilisation dans `predict.py`
+# ✅ Sauvegarde du scaler
 scaler_path = os.path.join(base_dir, "scaler.pkl")
 joblib.dump(scaler, scaler_path)
-print(f"✅ Scaler sauvegardé dans {scaler_path}")
 
-# 📌 Division des Données en Entraînement et Test
+# ✅ 10. Division des données en train/test
 X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
 
-# 📌 Entraîner le Modèle Principal
-model = LinearRegression()
+# ✅ 11. Entraînement du modèle avec RandomForestRegressor optimisé
+model = RandomForestRegressor(n_estimators=500, max_depth=20, min_samples_split=5, random_state=42)
 model.fit(X_train, y_train)
 
-# 📌 Évaluation du Modèle
+# ✅ 12. Prédictions et correction des valeurs négatives
 y_pred = model.predict(X_test)
-mse = mean_squared_error(y_test, y_pred)
-print(f"✅ Mean Squared Error: {mse:.2f}")
+y_pred = (y_pred ** 2) - 1  # Revenir à l’échelle originale après `sqrt(y + 1)`
+y_pred = np.clip(y_pred, 0, None)  # Correction des valeurs négatives
 
-# 📌 Sauvegarde du modèle principal
+# ✅ 13. Évaluation du modèle
+mse = mean_squared_error((y_test ** 2) - 1, y_pred)
+r2 = r2_score((y_test ** 2) - 1, y_pred)
+
+print(f"✅ Mean Squared Error (MSE) : {mse:.2f}")
+print(f"✅ Coefficient de détermination (R²) : {r2:.4f}")
+
+# ✅ 14. Sauvegarde du modèle
 model_path = os.path.join(base_dir, "modele_prevision.pkl")
 joblib.dump(model, model_path)
-print(f"✅ Modèle principal entraîné et sauvegardé dans {model_path}")
 
-# 📌 Cas Spécial : Entraîner un modèle SANS `taux_augmentation`
-data_sans_taux = data.copy()
-data_sans_taux = data_sans_taux[data_sans_taux["taux_augmentation"] == 0.0001]  # Prendre les cas `taux_augmentation = 0`
+# ✅ 15. Vérification avec Symfony (fichier de test JSON)
+result_json = os.path.join(base_dir, "result_prediction.json")
+with open(result_json, "w") as f:
+    f.write(str(y_pred.tolist()))
 
-if not data_sans_taux.empty:  # Vérifier qu'on a bien des exemples à entraîner
-    X_sans_taux = data_sans_taux[['utilisation_actuelle', 'capacite_depot']]  # ❌ Exclut `taux_augmentation`
-    y_sans_taux = (data_sans_taux["capacite_depot"] - data_sans_taux["utilisation_actuelle"])  # Juste le delta
+# ✅ 16. Affichage du scatter plot amélioré (Prédictions vs Réalités)
+plt.figure(figsize=(6, 6))
+sns.scatterplot(x=(y_test ** 2) - 1, y=y_pred, color="orange")
+plt.plot([min(y_test), max(y_test)], [min(y_test), max(y_test)], linestyle="dashed", color="black")  # Ligne d'identité
+plt.xlabel("Valeurs Réelles")
+plt.ylabel("Prédictions")
+plt.title("Prédictions vs Réalités après correction (RandomForest)")
+plt.show()
 
-    # 📌 Division des Données en Entraînement et Test
-    X_train_st, X_test_st, y_train_st, y_test_st = train_test_split(X_sans_taux, y_sans_taux, test_size=0.2, random_state=42)
-
-    # 📌 Entraîner le Modèle Secondaire
-    model_sans_taux = LinearRegression()
-    model_sans_taux.fit(X_train_st, y_train_st)
-
-    # 📌 Évaluation du Modèle Secondaire
-    y_pred_st = model_sans_taux.predict(X_test_st)
-    mse_st = mean_squared_error(y_test_st, y_pred_st)
-    print(f"✅ Mean Squared Error (Modèle sans `taux_augmentation`): {mse_st:.2f}")
-
-    # 📌 Sauvegarde du modèle secondaire
-    model_path_st = os.path.join(base_dir, "modele_sans_taux.pkl")
-    joblib.dump(model_sans_taux, model_path_st)
-    print(f"✅ Modèle secondaire entraîné et sauvegardé dans {model_path_st}")
- 
+# ✅ 17. Affichage d’un boxplot pour vérifier la répartition du taux d’augmentation
+plt.figure(figsize=(8, 4))
+sns.boxplot(x=data['taux_augmentation'], color="blue")
+plt.title("Boxplot du taux d'augmentation après correction")
+plt.show()

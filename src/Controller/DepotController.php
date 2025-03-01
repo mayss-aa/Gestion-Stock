@@ -1,10 +1,8 @@
 <?php
-
-
-
 namespace App\Controller;
 use App\Form\DepotType;
 use App\Entity\Depot;
+use App\Entity\StatistiqueDepot;
 use App\Repository\DepotRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use App\Repository\StatistiqueDepotRepository;
 
 
 
@@ -33,14 +32,19 @@ final class DepotController extends AbstractController
     
     #[Route('/depot/prevision', name: 'app_depot_prevision_no_nom')]
     #[Route('/depot/prevision/{id}', name: 'app_depot_prevision', methods: ['GET'])]
-   
-    public function prevoirDepot(DepotRepository $depotRepository, int $id = null): Response
-    {
+    public function prevoirDepot(
+        DepotRepository $depotRepository,
+        StatistiqueDepotRepository $statistiqueDepotRepository,
+        EntityManagerInterface $entityManager, // 📌 Ajout de l'EntityManager
+        int $id = null
+    ): Response {
         if ($id === null) {
             return $this->render('GestionStock/Frontoffice/depot/prevision_simple.html.twig', [
                 'depots' => $depotRepository->findAll(),
                 'depot' => null,
-                'prevision' => null
+                'prevision' => null,
+                'dates' => [],
+                'tauxRemplissage' => []
             ]);
         }
     
@@ -50,74 +54,79 @@ final class DepotController extends AbstractController
             return $this->render('GestionStock/Frontoffice/depot/prevision_simple.html.twig', [
                 'depots' => $depotRepository->findAll(),
                 'depot' => null,
-                'prevision' => "Dépôt introuvable"
+                'prevision' => "⚠️ Dépôt introuvable",
+                'dates' => [],
+                'tauxRemplissage' => []
             ]);
         }
     
-        // ✅ 1️⃣ Récupération des valeurs
+        // ✅ Générer une nouvelle statistique automatique
+        $stat = new StatistiqueDepot();
+        $stat->setDepot($depot);
+        $stat->setDate(new \DateTime()); // Date actuelle
+        $stat->setTauxRemplissage(mt_rand(10, 100)); // Valeur aléatoire entre 10% et 100%
+    
+        $entityManager->persist($stat);
+        $entityManager->flush();
+    
+        // ✅ Récupération des valeurs du dépôt
         $depot->calculateTauxAugmentation();
         $utilisationActuelle = $depot->getUtilisationEnM3();
         $tauxAugmentation = $depot->getTauxAugmentationEnM3();
         $capaciteDepot = $depot->getCapaciteEnM3();
     
-        // ✅ 2️⃣ Debug : Vérification des valeurs avant exécution
-        dump([
-            "📊 Utilisation Actuelle" => $utilisationActuelle,
-            "📊 Taux d'Augmentation" => $tauxAugmentation,
-            "📊 Capacité Dépôt" => $capaciteDepot
-        ]);
+        // ✅ Récupération des statistiques du dépôt
+        $stats = $statistiqueDepotRepository->findBy(['depot' => $depot], ['date' => 'ASC']);
     
-        // ✅ 3️⃣ Vérification du fichier Python
+        // ✅ Transformation des données pour l'affichage dans Chart.js
+        $dates = [];
+        $tauxRemplissage = [];
+    
+        foreach ($stats as $stat) {
+            $dates[] = $stat->getDate()->format('Y-m-d');  // Format ISO pour Chart.js
+            $tauxRemplissage[] = $stat->getTauxRemplissage();
+        }
+    
+        // ✅ Vérification du script Python
         $scriptPath = $this->getParameter('kernel.project_dir') . '/public/python/predict.py';
     
         if (!file_exists($scriptPath)) {
-            dump("❌ Erreur : Script Python introuvable à : " . $scriptPath);
-            die();
-        }
-    
-        // ✅ 4️⃣ Exécution du script Python
-        $pythonExecutable = 'C:\\Users\\mayss\\Downloads\\pidev-finalllllll\\pidev-finalllllll\\.venv\\Scripts\\python.exe';
-    
-        $process = new Process([
-            $pythonExecutable,
-            $scriptPath,
-            (string) $utilisationActuelle,
-            (string) $tauxAugmentation,
-            (string) $capaciteDepot,
-        ]);
-    
-        $process->run();
-    
-        // ✅ 5️⃣ Vérification après exécution
-        if (!$process->isSuccessful()) {
-            $prevision = "❌ Erreur lors de l'exécution du script.";
-            $this->addFlash('error', "⚠️ Erreur Python : " . $process->getErrorOutput());
+            $prevision = "❌ Erreur : Script Python introuvable.";
         } else {
-            // ✅ Récupérer uniquement la première ligne du résultat
-            $output = trim($process->getOutput());
-            $this->addFlash('info', "📢 Résultat brut script Python : '$output'");
+            // ✅ Exécution du script Python
+            $pythonExecutable = 'C:\\Users\\mayss\\Downloads\\pidev-finalllllll\\pidev-finalllllll\\.venv\\Scripts\\python.exe';
+            $process = new Process([
+                $pythonExecutable,
+                $scriptPath,
+                (string) $utilisationActuelle,
+                (string) $tauxAugmentation,
+                (string) $capaciteDepot
+            ]);
     
-            // ✅ Vérifier si la sortie est bien un nombre valide
-            if (is_numeric($output)) {
-                $prevision = number_format($output, 2);
-
-
-            } else {
-                $prevision = "❌ Erreur : Le script Python n'a pas retourné un nombre valide !";
+            try {
+                $process->mustRun();
+                $output = trim($process->getOutput());
+    
+                // Vérifier si le résultat est numérique
+                $prevision = is_numeric($output) ? number_format((float)$output, 2) : "❌ Erreur : Valeur invalide";
+    
+            } catch (ProcessFailedException $exception) {
+                $prevision = "❌ Erreur d'exécution du script Python.";
             }
         }
     
-        // ✅ 6️⃣ Retourner les valeurs au template
+        // ✅ Retourner les valeurs au template
         return $this->render('GestionStock/Frontoffice/depot/prevision_simple.html.twig', [
             'depot' => $depot,
             'prevision' => $prevision,
             'depots' => $depotRepository->findAll(),
-            'capacite_depot' => $capaciteDepot,  // Ajouté
-            'utilisation_actuelle' => $utilisationActuelle,  // Ajouté
-            'taux_augmentation' => $tauxAugmentation,  // Ajouté
+            'capacite_depot' => $capaciteDepot,
+            'utilisation_actuelle' => $utilisationActuelle,
+            'taux_augmentation' => $tauxAugmentation,
+            'dates' => $dates,
+            'tauxRemplissage' => $tauxRemplissage,
         ]);
     }
-    
     
     // Route pour afficher la liste des dépôts
     #[Route('/depot/list', name: 'app_depot_list')]

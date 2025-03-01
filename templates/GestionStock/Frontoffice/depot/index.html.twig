@@ -31,16 +31,30 @@
                     <td>{{ depot.statutDepot }}</td>
                    <td>{{ depot.getUtilisationActuelle() }} m³</td>  {# Affichage de l'utilisation actuelle #}
                    <td>{{ depot.getTauxAugmentation() }} m³/jour</td>  {# Affichage du taux d'augmentation #}
+<td>
+    <!-- Bouton Voir avec une nouvelle couleur -->
+    <a href="{{ path('app_depot_show', {'id': depot.id}) }}" class="btn btn-success btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Voir le dépôt">
+        <i class="bi bi-eye"></i> Voir
+    </a>
 
-                    <td>
-                        <a href="{{ path('app_depot_show', {'id': depot.id}) }}" class="btn btn-primary btn-sm"><i class="bi bi-eye"></i></a>
-                        <a href="{{ path('app_depot_edit', {'id': depot.id}) }}" class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i></a>
-                        <form action="{{ path('app_depot_delete', {'id': depot.id}) }}" method="post" style="display:inline;">
-                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Voulez-vous vraiment supprimer ce dépôt ?')">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </form>
-                    </td>
+    <!-- Bouton Editer avec une nouvelle couleur -->
+    <a href="{{ path('app_depot_edit', {'id': depot.id}) }}" class="btn btn-info btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Modifier le dépôt">
+        <i class="bi bi-pencil"></i> Modifier
+    </a>
+
+    <!-- Formulaire de suppression avec une nouvelle couleur -->
+    <form action="{{ path('app_depot_delete', {'id': depot.id}) }}" method="post" style="display:inline;">
+        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Voulez-vous vraiment supprimer ce dépôt ?')" data-bs-toggle="tooltip" data-bs-placement="top" title="Supprimer le dépôt">
+            <i class="bi bi-trash"></i> Supprimer
+        </button>
+    </form>
+
+    <!-- Bouton Prédiction avec une nouvelle couleur -->
+    <a href="{{ path('app_depot_prevision', {'id': depot.id}) }}" class="btn btn-warning btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Voir la prédiction">
+        <i class="bi bi-lightning"></i> Prédiction
+    </a>
+</td>
+
                 </tr>
             {% else %}
                 <tr>
