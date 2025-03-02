@@ -1,0 +1,28 @@
+{% extends 'basefront.html.twig' %}
+
+{% block title %}Liste des PDFs de Ressources{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="text-center">📂 Liste des PDFs de Ressources</h1>
+
+        <div class="text-center my-3">
+            <a href="{{ path('app_ressource_index') }}" class="btn btn-secondary">⬅️ Retour aux ressources</a>
+        </div>
+
+        {% if pdfFiles is empty %}
+            <p class="text-center text-muted">Aucun PDF enregistré.</p>
+        {% else %}
+            <ul class="list-group">
+                {% for file in pdfFiles %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ file }}
+                        <a href="{{ asset('pdfressource/' ~ file) }}" class="btn btn-sm btn-primary" target="_blank">
+                            📥 Télécharger
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+{% endblock %}

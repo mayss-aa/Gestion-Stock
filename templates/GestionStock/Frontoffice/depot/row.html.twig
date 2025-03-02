@@ -1,0 +1,27 @@
+{# GestionStock/Frontoffice/depot/_row.html.twig #}
+{% if data.ishown %}
+    <tr class="align-middle">
+        <td>{{ data.nomDepot }}</td>
+        <td>{{ data.localisationDepot }}</td>
+        <td>{{ data.capaciteDepot }}</td>
+        <td><span class="bg-primary p-2" style="border-radius: 15px;">{{ data.uniteCapDepot }}</span></td>
+        <td>{{ data.typeStockageDepot }}</td>
+        <td>{{ data.statutDepot }}</td>
+        <td>
+            {% if data.limitedby < data.totalRessource %}
+                <div class="spinner-grow spinner-grow-sm text-danger" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>Max capacity reached
+            {% endif %}
+        </td>
+        <td>
+            <a href="{{ path('app_depot_show', {'id': data.id}) }}" class="btn btn-primary btn-sm"><i class="bi bi-eye"></i></a>
+            <a href="{{ path('app_depot_edit', {'id': data.id}) }}" class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i></a>
+            <form action="{{ path('app_depot_delete', {'id': data.id}) }}" method="post" style="display:inline;">
+                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Voulez-vous vraiment supprimer ce dépôt ?')">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </form>
+        </td>
+    </tr>
+{% endif %}

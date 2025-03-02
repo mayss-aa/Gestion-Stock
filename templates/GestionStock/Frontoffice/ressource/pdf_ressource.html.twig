@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Ardhismart - Détails de la Ressource</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        h1, h2 { text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid black; padding: 10px; text-align: left; }
+        th { background-color: #f2f2f2; }
+
+        /* ✅ Section Signature améliorée */
+        .signature-section {
+            margin-top: 50px;
+            text-align: left;
+            font-size: 16px;
+        }
+
+        .signature-info {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .signature-line {
+            display: inline-block;
+            width: 250px;
+            border-bottom: 1px solid black;
+            margin-left: 10px;
+        }
+
+        .empty-space {
+            display: inline-block;
+            width: 100px; /* Espace vide pour la date */
+            border-bottom: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ✅ Titre Principal -->
+    <h1><strong>Ardhismart</strong></h1>
+    <h2><u>Détails de la Ressource</u></h2>
+
+    <!-- ✅ Détails de la Ressource -->
+    <table>
+        <tr><th>Nom:</th><td>{{ ressource.nomRessource }}</td></tr>
+        <tr><th>Type:</th><td>{{ ressource.typeRessource }}</td></tr>
+        <tr><th>Quantité:</th><td>{{ ressource.quantiteRessource }} {{ ressource.uniteMesure }}</td></tr>
+        <tr><th>Date d'Ajout:</th><td>{{ ressource.dateAjoutRessource|date('d/m/Y') }}</td></tr>
+        <tr><th>Date d'Expiration:</th><td>{{ ressource.dateExpirationRessource|date('d/m/Y') }}</td></tr>
+        <tr><th>Statut:</th><td>{{ ressource.statutRessource }}</td></tr>
+        <tr><th>Dépôt:</th><td>{{ ressource.depot.nomDepot }}</td></tr>
+    </table>
+
+    <!-- ✅ Section Signature améliorée -->
+    <div class="signature-section">
+        <div class="signature-info">
+            <span>Nom de l'Agriculteur : <span class="signature-line"></span></span>
+            <span>Date : <span class="empty-space"></span></span> <!-- ✅ Date vide à remplir -->
+        </div>
+        <h3><u>Signature de l'Agriculteur :</u> __________________________</h3>
+    </div>
+
+</body>
+</html>

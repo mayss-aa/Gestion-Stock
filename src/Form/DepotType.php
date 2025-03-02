@@ -68,6 +68,16 @@ class DepotType extends AbstractType
             'empty_data' => ''
 
                     ])
+
+
+                    ->add('limitedby', NumberType::class, [
+                        'attr' => ['class' => 'form-control', 'placeholder' => 'warning when reach'],
+                        'label' => 'warning when reach',
+                        'label_attr' => ['class' => 'form-label'],
+                        "mapped"=>true,
+                        'empty_data' => ''
+            
+                    ]) 
         ->add('statut_depot', ChoiceType::class, [
             'choices' => [
                 'Actif' => 'actif',

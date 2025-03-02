@@ -1,7 +1,5 @@
 <?php
 
-
-
 namespace App\Entity;
 
 use App\Repository\RessourceRepository;
@@ -51,6 +49,27 @@ class Ressource
     #[ORM\ManyToOne(inversedBy: 'ressource')]
     private ?Depot $depot = null;
 
+
+    #[ORM\Column(type: 'boolean')]
+    private ?bool $isshown = true;
+    
+    public function getIsshown(): ?bool
+    {
+        return $this->isshown;
+    }
+    
+    public function setIsshown(bool $isshown): static
+    {
+        $this->isshown = $isshown;
+        return $this;
+    }
+    
+
+
+
+
+
+    
     public function getId(): ?int
     {
         return $this->id;

@@ -1,86 +1,168 @@
-
-
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    {# Page Header Section #}
-    <div class="page-header">
-        <h3 class="page-title">Liste des Dépôts</h3>
-        <div class="header-actions"></div>
-    </div>
+{# Page Header Section #}
+<div class="page-header">
+    <h3 class="page-title">Liste des Dépôts</h3>
+    <div class="header-actions"></div>
+</div>
 
-    {# Breadcrumb Navigation #}
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Dépôts</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Liste des Dépôts</li>
-        </ol>
-    </nav>
+{# Breadcrumb Navigation #}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Dépôts</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Liste des Dépôts</li>
+    </ol>
+</nav>
 
-    {# Main Content Section #}
-    <div class="row">
-        <div class="col-12 grid-margin stretch-card">
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title">Liste des Dépôts</h4>
-                    <div class="table-responsive" style="height: 400px; overflow-y: auto; overflow-x: auto;">
-                        {# Dépôts List Table #}
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Nom du Dépôt</th>
-                                    <th>Localisation</th>
-                                    <th>Capacité</th>
-                                    <th>Unité de Capacité</th>
-                                    <th>Type de Stockage</th>
-                                    <th>Statut</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for depot in depots %}
-                                    <tr>
-                                        <td>{{ depot.nomDepot }}</td> {# Nom du dépôt #}
-                                        <td>{{ depot.localisationDepot }}</td> {# Localisation du dépôt #}
-                                        <td>{{ depot.capaciteDepot }}</td> {# Capacité du dépôt #}
-                                        <td>{{ depot.uniteCapDepot }}</td> {# Unité de capacité #}
-                                        <td>{{ depot.typeStockageDepot }}</td> {# Type de stockage #}
-                                        <td>{{ depot.statutDepot }}</td> {# Statut du dépôt #}
-                                        <td>
-                                            <a href="{{ path('backoffice_depot_edit', { 'id': depot.id }) }}" class="btn btn-outline-warning">Modifier</a>
+{# Main Content Section #}
+<div class="row">
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Liste des Dépôts</h4>
+                <div class="table-responsive" style="height: 400px; overflow-y: auto; overflow-x: auto;">
+                    {# Dépôts List Table #}
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Nom du Dépôt</th>
+                                <th>Localisation</th>
+                                <th>Capacité</th>
+                                <th>Unité de Capacité</th>
+                                <th>Type de Stockage</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for depot in depots %}
+                            <tr>
+                                <td>{{ depot.nomDepot }}</td> {# Nom du dépôt #}
+                                <td>{{ depot.localisationDepot }}</td> {# Localisation du dépôt #}
+                                <td>{{ depot.capaciteDepot }}</td> {# Capacité du dépôt #}
+                                <td>{{ depot.uniteCapDepot }}</td> {# Unité de capacité #}
+                                <td>{{ depot.typeStockageDepot }}</td> {# Type de stockage #}
+                                <td>{{ depot.statutDepot }}</td> {# Statut du dépôt #}
+                                <td>
+                                    {# Bouton AJAX pour afficher / cacher le dépôt #}
+                                    <button class="toggle-visibility btn btn-sm 
+                                        {% if depot.isshown %} btn-danger {% else %} btn-success {% endif %}" 
+                                        data-id="{{ depot.id }}">
+                                        {% if depot.isshown %} Ne plus afficher {% else %} Afficher {% endif %}
+                                    </button>
+                                    
+                                    {# Bouton Modifier #}
+                                    <a href="{{ path('backoffice_depot_edit', { 'id': depot.id }) }}" class="btn btn-outline-warning">
+                                        Modifier
+                                    </a>
 
-                                            {# Formulaire de suppression #}
-                                            <form method="post" action="{{ path('backoffice_depot_delete', { 'id': depot.id }) }}" style="display:inline;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce dépôt ?');">
-                                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ depot.id) }}">
-                                                <button type="submit" class="btn btn-outline-danger">Supprimer</button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                {% else %}
-                                    <tr>
-                                        <td colspan="7" class="text-center text-muted">Aucun dépôt enregistré.</td>
-                                    </tr>
-                                {% endfor %}
-                                {% for message in app.flashes('successmay') %}
-    <div class="alert alert-success">
-        {{ message }}
-    </div>
-{% endfor %}
+                                    {# Formulaire de suppression #}
+                                    <form method="post" action="{{ path('backoffice_depot_delete', { 'id': depot.id }) }}" 
+                                          style="display:inline;" 
+                                          onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce dépôt ?');">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ depot.id) }}">
+                                        <button type="submit" class="btn btn-outline-danger">Supprimer</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="7" class="text-center text-muted">Aucun dépôt enregistré.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
 
-{% for message in app.flashes('errormay') %}
-    <div class="alert alert-danger">
-        {{ message }}
-    </div>
-{% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                    {# Action Links #}
-                    <div class="action-links mt-3">
-                        <a href="{{ path('backoffice_depot_index') }}">Retour à la liste</a>
-                    </div>
+                {# Action Links #}
+                <div class="action-links mt-3">
+                    <a href="{{ path('backoffice_depot_index') }}">Retour à la liste</a>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+ 
+   <script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll(".toggle-visibility").forEach(button => {
+        button.addEventListener("click", function () {
+            let depotId = this.getAttribute("data-id");
+            let button = this;
+
+            // Désactiver temporairement le bouton et afficher un spinner
+            button.disabled = true;
+            let originalText = button.innerHTML;
+            button.innerHTML = `<span class="spinner-border spinner-border-sm"></span>`;
+
+            fetch(`/depot/isshown/${depotId}`, {
+                method: "POST",
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest",
+                    "Content-Type": "application/json"
+                },
+                credentials: "same-origin",
+                body: JSON.stringify({})
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Erreur de serveur");
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Mettre à jour dynamiquement le bouton
+                if (data.isShown) {
+                    button.innerHTML = "Ne plus afficher";
+                    button.classList.remove("btn-success");
+                    button.classList.add("btn-danger");
+                } else {
+                    button.innerHTML = "Afficher";
+                    button.classList.remove("btn-danger");
+                    button.classList.add("btn-success");
+                }
+
+                // 📌 Cacher ou afficher dynamiquement le dépôt et ses ressources
+                updateFrontOfficeDepot(data.id, data.isShown, data.ressourceIds);
+            })
+            .catch(error => {
+                console.error("Erreur AJAX :", error);
+                button.innerHTML = originalText;
+            })
+            .finally(() => {
+                button.disabled = false;
+            });
+        });
+    });
+});
+
+// 📌 Fonction pour cacher/afficher le dépôt et ses ressources en FrontOffice
+function updateFrontOfficeDepot(depotId, isShown, ressourceIds) {
+    let frontDepotRow = document.querySelector(`#depot-row-${depotId}`);
+    if (frontDepotRow) {
+        if (!isShown) {
+            frontDepotRow.style.display = "none"; // Cacher le dépôt
+        } else {
+            frontDepotRow.style.display = "table-row"; // Réafficher si nécessaire
+        }
+    }
+
+    // Cacher ou afficher toutes les ressources associées à ce dépôt
+    ressourceIds.forEach(ressourceId => {
+        let ressourceRow = document.querySelector(`#ressource-row-${ressourceId}`);
+        if (ressourceRow) {
+            if (!isShown) {
+                ressourceRow.style.display = "none"; // Cacher la ressource
+            } else {
+                ressourceRow.style.display = "table-row"; // Réafficher la ressource
+            }
+        }
+    });
+}
+</script>
+
+
+
 {% endblock %}

@@ -44,6 +44,11 @@ class Depot
     // Jointure avec Ressource
     #[ORM\OneToMany(targetEntity: Ressource::class, mappedBy: 'depot', cascade: ["remove"])]
     private Collection $ressources;
+    #[ORM\Column]
+    private ?int $limitedby = null;
+
+    #[ORM\Column]
+    private ?bool $isshown = null;
 
     #[ORM\Column(type: "float", nullable: true)]
     private ?float $utilisation_actuelle = null;
@@ -149,10 +154,39 @@ class Depot
         return $this;
     }
 
+    /**
+     * @return Collection<int, Ressource>
+     */
     public function getRessources(): Collection
     {
         return $this->ressources;
     }
+
+
+
+
+
+
+
+
+
+
+    public function getLimitedby(): ?int
+    {
+        return $this->limitedby;
+    }
+
+    public function setLimitedby(int $limitedby): static
+    {
+        $this->limitedby = $limitedby;
+
+        return $this;
+    }
+
+
+
+
+
 
     public function calculateTauxAugmentation(): float
     {
@@ -227,4 +261,33 @@ class Depot
     {
         return $this->taux_augmentation !== null ? $this->convertToM3($this->taux_augmentation, $this->unite_cap_depot) : 0.0;
     }
+
+    public function __toString()
+    {
+        return " capacité disponible : ". $this-> nom_depot . " capacité disponible : ".$this->capacite_depot ;
+    }
+
+    public function getIsshown(): ?bool
+    {
+        return $this->isshown;
+    }
+    
+    public function setIsshown(bool $isshown): static
+    {
+        $this->isshown = $isshown;
+        return $this;
+    }
+    
+
+    public function hideRessources(): void
+    {
+        foreach ($this->ressources as $ressource) {
+            $ressource->setIsshown(false);  // Met toutes les ressources du dépôt en invisible
+        }
+    }
+    
+
+
+
+
 }

@@ -4,7 +4,8 @@ namespace App\Form;
 
 use App\Entity\Depot;
 use App\Entity\Ressource;
- use Symfony\Component\Form\AbstractType;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -12,8 +13,11 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
+
 class RessourceType extends AbstractType
 {
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
          $builder
@@ -89,7 +93,11 @@ class RessourceType extends AbstractType
         ])
         ->add('depot', EntityType::class, [
             'class' => Depot::class,
-            'choice_label' => 'nomDepot', // Afficher le nom du dépôt
+            'query_builder' => function (EntityRepository $er) {
+                return $er->createQueryBuilder('d')
+                    ->where('d.isshown = :status')
+                    ->setParameter('status', true);
+            },
             'attr' => ['class' => 'form-select'],
             'label' => 'Dépôt',
             'label_attr' => ['class' => 'form-label'],

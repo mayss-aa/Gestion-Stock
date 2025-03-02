@@ -2,71 +2,217 @@
 
 {% block title %}Depot index{% endblock %}
 {% block body %}
-<div class="container mt-5 pt-5"> <!-- Main content padding -->
-    <h1 class="text-center my-5 py-5">Les Depots</h1> <!-- Extra top padding for the title -->
-    <div class="table-responsive">
-        <table class="table table-hover shadow-sm border-0">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Nom Depot</th>
-                    <th>Localisation</th>
-                    <th>Capacité</th>
-                    <th>Unité</th>
-                    <th>Type Stockage</th>
-                    <th>Statut</th>
-                    <th>Utilisation actuelle (m³)</th>
-                    <th>Taux d'augmentation (m³/jour)</th>
-                    <th>Actions</th>
-                    
-                </tr>
-            </thead>
-            <tbody>
-            {% for depot in depots %}
-                <tr class="align-middle">
-                    <td>{{ depot.nomDepot }}</td>
-                    <td>{{ depot.localisationDepot }}</td>
-                    <td>{{ depot.capaciteDepot }}</td>
-                    <td><span class="bg-primary p-2" style="border-radius: 15px;">{{ depot.uniteCapDepot }}</span></td>
-                    <td>{{ depot.typeStockageDepot }}</td>
-                    <td>{{ depot.statutDepot }}</td>
-                   <td>{{ depot.getUtilisationActuelle() }} m³</td>  {# Affichage de l'utilisation actuelle #}
-                   <td>{{ depot.getTauxAugmentation() }} m³/jour</td>  {# Affichage du taux d'augmentation #}
-<td>
-    <!-- Bouton Voir avec une nouvelle couleur -->
-    <a href="{{ path('app_depot_show', {'id': depot.id}) }}" class="btn btn-success btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Voir le dépôt">
-        <i class="bi bi-eye"></i> Voir
-    </a>
+<style>
+    /* Réduction de la police globale du tableau */
+    .table {
+        font-size: 0.85rem;
+    }
 
-    <!-- Bouton Editer avec une nouvelle couleur -->
-    <a href="{{ path('app_depot_edit', {'id': depot.id}) }}" class="btn btn-info btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Modifier le dépôt">
-        <i class="bi bi-pencil"></i> Modifier
-    </a>
+    /* Réduction des badges */
+    .badge {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.5rem;
+    }
 
-    <!-- Formulaire de suppression avec une nouvelle couleur -->
-    <form action="{{ path('app_depot_delete', {'id': depot.id}) }}" method="post" style="display:inline;">
-        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Voulez-vous vraiment supprimer ce dépôt ?')" data-bs-toggle="tooltip" data-bs-placement="top" title="Supprimer le dépôt">
-            <i class="bi bi-trash"></i> Supprimer
-        </button>
-    </form>
+    /* Réduction des boutons */
+    .btn {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.5rem;
+    }
 
-    <!-- Bouton Prédiction avec une nouvelle couleur -->
-    <a href="{{ path('app_depot_prevision', {'id': depot.id}) }}" class="btn btn-warning btn-sm" data-bs-toggle="tooltip" data-bs-placement="top" title="Voir la prédiction">
-        <i class="bi bi-lightning"></i> Prédiction
-    </a>
+    /* Réduction des marges et espacements */
+    .table td, .table th {
+        padding: 0.4rem;
+        vertical-align: middle;
+    }
+
+    /* Ajustement des icônes */
+    .btn i {
+        font-size: 0.85rem;
+    }
+</style>
+
+  <div class="mb-4">
+        <input type="text" id="searchInput" class="form-control" placeholder="Rechercher un dépôt...">
+    </div>
+<div class="container mt-4">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Localisation</th>
+                <th>Capacité</th>
+                <th>Unité</th>
+                <th>Type</th>
+                <th>Statut</th>
+                <th>Utilisation</th>
+                <th>Augmentation</th>
+                <th>Alertes</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="depotTableBody">
+            {% for data in depotData %}
+                {% if data.ishown %}
+                <tr class="align-middle" id="depot-row-{{ data.id }}">
+                        <td class="text-nowrap">{{ data.nomDepot }}</td>
+                        <td class="text-nowrap">{{ data.localisationDepot }}</td>
+                        <td class="text-nowrap">{{ data.capaciteDepot }}</td>
+                        <td>
+                            <span class="badge bg-success px-2 py-1">{{ data.uniteCapDepot }}</span>
+                        </td>
+                        <td class="text-nowrap">{{ data.typeStockageDepot }}</td>
+                        <td>
+                            <span class="badge bg-info text-dark px-2 py-1">{{ data.statutDepot }}</span>
+                        </td>
+                        <td class="text-nowrap">
+                            <span class="badge bg-primary px-2 py-1">{{ data.utilisationActuelle }} m³</span>
+                        </td>
+                        <td class="text-nowrap">
+                            <span class="badge bg-warning text-dark px-2 py-1">{{ data.tauxAugmentation }} m³/jour</span>
+                        </td>
+                        <td>
+                            {% if data.limitedby < data.totalRessource %}
+                                <div class="d-flex align-items-center text-danger">
+                                    <div class="spinner-grow spinner-grow-sm me-2" role="status"></div> 
+                                    <strong>Max capacity reached</strong>
+                                </div>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="d-flex">
+                                <a href="{{ path('app_depot_show', {'id': data.id}) }}" class="btn btn-success btn-sm me-2">
+                                    <i class="bi bi-eye"></i> Voir
+                                </a>
+                                <a href="{{ path('app_depot_edit', {'id': data.id}) }}" class="btn btn-info btn-sm me-2">
+                                    <i class="bi bi-pencil"></i> Modifier
+                                </a>
+                                <form action="{{ path('app_depot_delete', {'id': data.id}) }}" method="post" class="me-2">
+                                    <button type="submit" class="btn btn-danger btn-sm"
+                                            onclick="return confirm('Voulez-vous vraiment supprimer ce dépôt ?')">
+                                        <i class="bi bi-trash"></i> Supprimer
+                                    </button>
+                                </form>
+                                <a href="{{ path('app_depot_prevision', {'id': data.id}) }}" class="btn btn-warning btn-sm">
+                                    <i class="bi bi-lightning"></i> Prédiction
+                                </a>
+                                <td>
+
+
+
 </td>
 
-                </tr>
-            {% else %}
-                <tr>
-                    <td colspan="7" class="text-center">Aucun dépôt trouvé</td>
-                </tr>
+                            </div>
+                        </td>
+                    </tr>
+                {% endif %}
             {% endfor %}
-            </tbody>
-        </table>
-    </div>
 
-    <div class="text-center mt-4">
-        <a href="{{ path('app_depot_new') }}" class="btn btn-success">Créer un nouveau dépôt</a>
-    </div>
+            {% if depotData is empty %}
+                <tr>
+                    <td colspan="10" class="text-center">Aucun dépôt trouvé</td>
+                </tr>
+            {% endif %}
+        </tbody>
+       
+    </table>
+
+
+
 </div>
+
+<!-- JavaScript for Dynamic Search -->
+<!-- Ancien code intégral, aucune ligne supprimée -->
+<script>
+    document.getElementById('searchInput').addEventListener('input', function () {
+        const query = this.value.trim();
+
+        if (query.length === 0) {
+            document.getElementById('depotTableBody').innerHTML = "";
+            return;
+        }
+
+        fetch(`/depot/search?search=${encodeURIComponent(query)}`)
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.getElementById('depotTableBody');
+                tableBody.innerHTML = "";
+
+                data.forEach(depot => {
+                    if (depot.isshown) {
+                        const row = `
+                            <tr class="align-middle" id="depot-row-${depot.id}">
+                                <td>${depot.nomDepot}</td>
+                                <td>${depot.localisationDepot}</td>
+                                <td>${depot.capaciteDepot}</td>
+                                <td><span class="badge bg-success px-2 py-1">${depot.uniteCapDepot}</span></td>
+                                <td>${depot.typeStockageDepot}</td>
+                                <td><span class="badge bg-info text-dark px-2 py-1">${depot.statutDepot}</span></td>
+                                <td><span class="badge bg-primary px-2 py-1">${depot.utilisationActuelle} m³</span></td>
+                                <td><span class="badge bg-warning text-dark px-2 py-1">${depot.tauxAugmentation} m³/jour</span></td>
+                                <td>
+                                    ${depot.limitedby < depot.totalRessource ? 
+                                        `<div class="d-flex align-items-center text-danger">
+                                            <div class="spinner-grow spinner-grow-sm me-2" role="status"></div> 
+                                            <strong>Max capacity reached</strong>
+                                        </div>` 
+                                        : ""}
+                                </td>
+                                <td>
+                                    <div class="d-flex">
+                                        <a href="/depot/${depot.id}/show" class="btn btn-success btn-sm me-2">
+                                            <i class="bi bi-eye"></i> Voir
+                                        </a>
+                                        <a href="/depot/${depot.id}/edit" class="btn btn-info btn-sm me-2">
+                                            <i class="bi bi-pencil"></i> Modifier
+                                        </a>
+                                        <form action="/depot/${depot.id}/delete" method="post" class="me-2">
+                                            <button type="submit" class="btn btn-danger btn-sm" 
+                                                    onclick="return confirm('Voulez-vous vraiment supprimer ce dépôt ?')">
+                                                <i class="bi bi-trash"></i> Supprimer
+                                            </button>
+                                        </form>
+                                        <a href="/depot/${depot.id}/prevision" class="btn btn-warning btn-sm">
+                                            <i class="bi bi-lightning"></i> Prédiction
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>`;
+                        tableBody.innerHTML += row;
+                    }
+                });
+            })
+            .catch(error => console.error('Erreur lors de la récupération des résultats de recherche:', error));
+    });
+</script>
+
+
+<!-- Ajout du script AJAX Polling juste en dessous (aucune ligne supprimée ci-dessus) -->
+<script>
+function pollDepotUpdates() {
+    fetch('/depot/updates') // Endpoint créé dans DepotController
+        .then(response => response.json())
+        .then(depots => {
+            depots.forEach(depot => {
+                // On récupère l'élément <tr> correspondant
+                let row = document.getElementById(`depot-row-${depot.id}`);
+                if (!row) {
+                    // Le dépôt n'existe pas forcément dans cette liste filtrée
+                    return;
+                }
+                // isShown = false => on cache, true => on affiche
+                if (!depot.isShown) {
+                    row.style.display = "none";
+                } else {
+                    row.style.display = "table-row";
+                }
+            });
+        })
+        .catch(error => console.error("Erreur Polling Depots:", error));
+}
+
+// Rafraîchit l'état des dépôts toutes les 2 secondes
+setInterval(pollDepotUpdates, 2000);
+</script>
+
 {% endblock %}

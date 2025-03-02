@@ -1,9 +1,19 @@
 <?php
 namespace App\Controller;
-use App\Form\DepotType;
-use App\Entity\Depot;
-use App\Entity\StatistiqueDepot;
 use App\Repository\DepotRepository;
+use App\Repository\RessourceRepository;
+use App\Repository\StatistiqueRessoureceRepository;
+use App\Form\DepotType;
+use Endroid\QrCode\Builder\Builder;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+use Endroid\QrCode\Encoding\Encoding;
+use App\Entity\Depot;
+use Dompdf\Options;
+use Dompdf\Dompdf;
+use App\Entity\StatistiqueDepot;
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,10 +24,65 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 use App\Repository\StatistiqueDepotRepository;
 
 
-
-
 final class DepotController extends AbstractController
-{
+{ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    #[Route('/depot', name: 'app_depot_index')]
+    public function index(DepotRepository $depotRepository): Response
+    {
+
+        $depots = $depotRepository->findAll();
+        $depotData = [];
+
+        foreach ($depots as $depot) {
+            $totalRessource = 0;
+            foreach ($depot->getRessources() as $ressource) {
+                $totalRessource += $ressource->getQuantiteRessource(); // Assuming getQuantite() exists
+            }
+
+            $depotData[] = [
+                'depot' => $depot,
+                'totalRessource' => $totalRessource
+            ];
+        }
+
+
+
+        // On récupère tous les dépôts de la base de données et on les passe à 'index.html.twig'
+        return $this->render('GestionStock/Frontoffice/depot/index.html.twig', [
+            'depotData' => $depotData,
+        ]);
+    }
+
+
+
+
+
+
+
+
+
+
     private EntityManagerInterface $entityManager;
 
     // Injection de EntityManagerInterface via le constructeur
@@ -26,9 +91,10 @@ final class DepotController extends AbstractController
         $this->entityManager = $entityManager;
     }
     public function getCapaciteEnM3(): float
-    {dump($this->capacite_depot, $this->unite_cap_depot);
+    {
         return $this->convertToM3($this->capacite_depot, $this->unite_cap_depot);
     }
+    
     
     #[Route('/depot/prevision', name: 'app_depot_prevision_no_nom')]
     #[Route('/depot/prevision/{id}', name: 'app_depot_prevision', methods: ['GET'])]
@@ -120,7 +186,7 @@ final class DepotController extends AbstractController
             'depot' => $depot,
             'prevision' => $prevision,
             'depots' => $depotRepository->findAll(),
-            'capacite_depot' => $capaciteDepot,
+            'capacite_depot' => isset($depot) ? $depot->getCapaciteEnM3() : null,
             'utilisation_actuelle' => $utilisationActuelle,
             'taux_augmentation' => $tauxAugmentation,
             'dates' => $dates,
@@ -130,7 +196,7 @@ final class DepotController extends AbstractController
     
     // Route pour afficher la liste des dépôts
     #[Route('/depot/list', name: 'app_depot_list')]
-    public function listDepot(DepotRepository $depotRepository): Response
+    public function listDepot(DepotRepository $depotRepository,  MailerInterface $mailer): Response
     {
         // Récupérer tous les dépôts
         $depots = $depotRepository->findAll();
@@ -141,10 +207,44 @@ final class DepotController extends AbstractController
         foreach ($depots as $depot) {
             $this->updateDepotUsage($depot);  // Mise à jour automatique
         }
+        $depotData = [];
+        foreach ($depots as $depot) {
+            $totalRessource = 0;
+            foreach ($depot->getRessources()as $ressource) {
+                $totalRessource += $ressource->getQuantiteRessource(); // Assuming getQuantite() exists
+            }
+
+            if ($totalRessource >= $depot->getLimitedby()) {
+                $email = (new Email())
+                    ->from('mayssa@esprit.tn')
+                    ->to('recipient@esprit.com') // Change to actual recipient email
+                    ->subject('Your depot is about to be full')
+                    ->text("Warning: The depot '{$depot->getNomDepot()}' is reaching its limit. 
+                            Current stock: $totalRessource / {$depot->getLimitedby()}.");
+
+                $mailer->send($email);
+            }
+            $depotData[] = [
+                'id' => $depot->getId(),
+                'nomDepot' => $depot->getNomDepot(),
+                'localisationDepot' => $depot->getLocalisationDepot(),
+                'capaciteDepot' => $depot->getCapaciteDepot(),
+                'uniteCapDepot' => $depot->getUniteCapDepot(),
+                'typeStockageDepot' => $depot->getTypeStockageDepot(),
+                'statutDepot' => $depot->getStatutDepot(),
+                'limitedby' => $depot->getLimitedby(),
+                'totalRessource' => $totalRessource,
+                'utilisationActuelle' => $depot->getUtilisationActuelle(),  // ✅ Ajouté
+                'tauxAugmentation' => $depot->getTauxAugmentation(),  // ✅ Ajouté
+                'ressources' => $depot->getRessources(), // Send resources for loop in Twig
+                'ishown' => $depot->getIsshown(), // Send resources for loop in Twig
+            ];
+        }
+
 
         // Rendre la vue
         return $this->render('GestionStock/Frontoffice/depot/index.html.twig', [
-            'depots' => $depots,
+            'depotData' => $depotData,
         ]);
     }
 
@@ -209,11 +309,10 @@ public function convertToM3(float $quantite, string $unite): float
             ->setUniteCapDepot('m³')
             ->setTypeStockageDepot('Réfrigéré')
             ->setStatutDepot('Actif');
-
-        $this->entityManager->persist($depot);
-        $this->entityManager->flush();
-
-        $this->updateDepotUsage($depot);
+          
+            $entityManager->persist($depot);
+            $entityManager->flush();
+            $this->updateDepotUsage($depot);
 
         return new Response('Dépôt ajouté avec succès.');
     }
@@ -227,8 +326,8 @@ public function convertToM3(float $quantite, string $unite): float
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->entityManager->persist($depot);
-            $this->entityManager->flush();
+            entityManager->persist($depot);
+            entityManager->flush();
 
             // Mettre à jour l'utilisation actuelle et le taux d'augmentation après la sauvegarde
             $this->updateDepotUsage($depot);
@@ -294,10 +393,129 @@ public function convertToM3(float $quantite, string $unite): float
         if (!$depot) {
             throw $this->createNotFoundException('Dépôt non trouvé.');
         }
+        $totale = 0;
+        foreach ($depot->getRessources() as $ressource) {
+
+            $totale++;
+        }
+        $data = 'Nom depot : ' . $depot->getNomDepot()  . '  || Nombre des ressources : ' . $totale;
+
+        $result = Builder::create()
+            ->writer(new \Endroid\QrCode\Writer\SvgWriter())
+            ->data($data)
+            ->encoding(new Encoding('UTF-8'))
+            ->errorCorrectionLevel(ErrorCorrectionLevel::Medium)
+            ->size(300)
+            ->margin(10)
+            ->build();
+        $dataUri = $result->getDataUri();
+
 
         // Retourner la vue 'show.html.twig' avec les détails du dépôt
         return $this->render('GestionStock/Frontoffice/depot/show.html.twig', [
             'depot' => $depot,
+            'QR' => $dataUri
         ]);
     }
+
+    #[Route('/depot/search', name: 'api_search', methods: ['GET'])]
+    public function search(Request $request, DepotRepository $repository): JsonResponse
+    {
+        $query = $request->query->get('search', '');
+    
+        if (!$query) {
+            return $this->json([]);
+        }
+    
+        // Search for matching Depot entities
+        $results = $repository->createQueryBuilder('d')
+            ->where('d.nom_depot LIKE :search OR d.localisation_depot LIKE :search')
+            ->andWhere('d.isshown = :status') // Ensuring only visible depots are shown
+            ->setParameter('search', "%$query%")
+            ->setParameter('status', true)
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
+    
+        // Convert entities to an array
+        $data = array_map(fn($depot) => [
+            'id' => $depot->getId(),
+            'nomDepot' => $depot->getNomDepot(),
+            'localisationDepot' => $depot->getLocalisationDepot(),
+            'capaciteDepot' => $depot->getCapaciteDepot(),
+            'uniteCapDepot' => $depot->getUniteCapDepot(),
+            'typeStockageDepot' => $depot->getTypeStockageDepot(),
+            'statutDepot' => $depot->getStatutDepot(),
+            'isshown' => $depot->getIsshown(),
+        ], $results);
+    
+        return $this->json($data);
+    }
+
+
+
+
+
+    
+
+
+    #[Route('/depot/isshown/{id}', name: 'app_depot_shown', methods: ['POST'])]
+    public function toggleVisibility(int $id, DepotRepository $depotRepository, EntityManagerInterface $entityManager): JsonResponse
+    {
+        // Trouver le dépôt par son ID
+        $depot = $depotRepository->find($id);
+    
+        if (!$depot) {
+            return new JsonResponse(['error' => 'Dépôt introuvable'], Response::HTTP_NOT_FOUND);
+        }
+    
+        // Inverser l'état d'affichage
+        $depot->setIsshown(!$depot->getIsshown());
+        $isShown = $depot->getIsshown();  // ➜ Récupérer la nouvelle valeur (true/false)
+    
+        // Récupérer les IDs des ressources liées à ce dépôt
+        $ressourceIds = [];
+        foreach ($depot->getRessources() as $ressource) {
+            // ➜ Ajouter cette ligne pour que la ressource ait le même statut que le dépôt
+            $ressource->setIsshown($isShown);
+    
+            $ressourceIds[] = $ressource->getId();
+    
+            // ➜ Persister aussi la ressource pour enregistrer la mise à jour en base
+            $entityManager->persist($ressource);
+        }
+    
+        // Sauvegarde en base de données
+        $entityManager->persist($depot);
+        $entityManager->flush();
+    
+        return new JsonResponse([
+            'id' => $depot->getId(),
+            'isShown' => $depot->getIsshown(),
+            'ressourceIds' => $ressourceIds // Retourner les ressources liées
+        ]);
+    }
+
+    #[Route('/depot/updates', name: 'app_depot_updates', methods: ['GET'])]
+public function getDepotUpdates(DepotRepository $depotRepository): JsonResponse
+{
+    $depots = $depotRepository->findAll();
+    $data = [];
+
+    foreach ($depots as $depot) {
+        $ressourceIds = [];
+        foreach ($depot->getRessources() as $ressource) {
+            $ressourceIds[] = $ressource->getId();
+        }
+
+        $data[] = [
+            'id' => $depot->getId(),
+            'isShown' => $depot->getIsshown(),
+            'ressourceIds' => $ressourceIds
+        ];
+    }
+
+    return new JsonResponse($data);
+}
+
 }
